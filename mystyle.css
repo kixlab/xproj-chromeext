@@ -1,0 +1,83 @@
+#myContainer {
+  width: 100%;
+  border: 1px solid black;
+}
+.ui-dialog {
+  position: fixed !important;  
+}
+#myContainer a { 
+  color: blue; 
+  text-decoration: none;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+#myContainer a:visited { 
+  color: blue; 
+  text-decoration: none;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+#myContainer a:hover { 
+  color: blue; 
+  text-decoration: underline;
+  white-space: normal;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.yesButton {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  /* float: right; */
+}
+
+.submitButton {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 3px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  /* float: right; */
+}
+
+.noButton {
+  background-color: #f44336; /* Green */
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  /* float: right; */
+}
+
+#finButton {
+  background-color: #2185d0; /* Green */
+  border: none;
+  color: white;
+  padding: 3px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  /* float: right; */
+}
+
+.progressButtons {
+  background-color: #2185d0; /* Green */
+  border: none;
+  color: white;
+  padding: 3px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  /* float: right; */
+}
