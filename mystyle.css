@@ -38,6 +38,17 @@
   /* float: right; */
 }
 
+.dontknow {
+  background-color: #999999; /* Green */
+  border: none;
+  color: white;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  /* float: right; */
+}
+
 .submitButton {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -73,6 +84,17 @@
 
 .progressButtons {
   background-color: #2185d0; /* Green */
+  border: none;
+  color: white;
+  padding: 3px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  /* float: right; */
+}
+
+.dontknowProgress{
+  background-color: #999999; /* Green */
   border: none;
   color: white;
   padding: 3px 8px;
