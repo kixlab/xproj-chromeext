@@ -33,7 +33,23 @@ let questions = function () {
   }
   console.log(str)
   $('#myContainer').append(str)
-  $('.buttons').click(function () {
+  $('.yesButton').click(function () {
+    $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
+      question: qs[qidx].content,
+      score: 1
+    })
+    qidx += 1
+    questions()
+  })
+  $('.noButton').click(function () {
+    $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
+      question: qs[qidx].content,
+      score: 0
+    })
+    qidx += 1
+    questions()
+  })
+  $('.progressButtons').click(function () {
     qidx += 1
     questions()
   })
@@ -51,7 +67,7 @@ let addButtons = function () {
     },
     minHeight: 200
   })
-  promise = promises[0]//promises[Math.floor(Math.random() * promises.length)]
+  promise = promises[Math.floor(Math.random() * promises.length)]
   qs = [
     {
       content: '지금 보고 계신 기사가 해당 공약 이행과 관련이 있어 보이시나요?',
