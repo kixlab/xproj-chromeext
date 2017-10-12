@@ -146,7 +146,7 @@ var initializePromiseList = function () {
   // let data = new FormData()
   // data.append('article', article)
   let httpPost = new XMLHttpRequest()
-  let url = 'http://34.208.245.104:3000/promise/seoul/0
+  let url = 'http://34.208.245.104:3000/promise/seoul/0'
   httpPost.onreadystatechange = function (err) {
     if (httpPost.readyState == 4 && httpPost.status == 200) {
       let response = JSON.parse(httpPost.responseText)
