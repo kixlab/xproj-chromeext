@@ -342,6 +342,14 @@ var initializePromiseList = function () {
   let data = {"article": article}
   console.log(JSON.stringify(data))
   httpPost.send(JSON.stringify(data))
+};
+
+var authenticate = function () {
+  /*chrome.runtime.sendMessage({action: "getUser"}, function(response) {
+    console.log(response);
+  });
+  */
 }
 
 initializePromiseList()
+authenticate();
