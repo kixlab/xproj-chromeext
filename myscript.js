@@ -8,7 +8,7 @@ let category = ''
 //   initializePromiseList()
 // }
 
-let questions = function () {
+const questions = function () {
   $('#myContainer').empty()
   let str = '<h3>' + promise.title + '</h3><br>'  
   // str += '<p> 초등학생 2명 중 1명은 ‘나홀로 등하교’ 학생입니다. 그들이 전체 사고의 67.2%를 차지합니다. 어린이보호구역 내에서 만큼은 어린이 교통사고를 완전히 없앨 방법이 반드시 필요합니다.</p> '
@@ -144,17 +144,8 @@ let questions = function () {
     })
   }
 }
-let addButtons = function () {
-  $('#articleBodyContents').append('<div id="myContainer" title="PromiseBook"><h3>기사와 관련있는 ' + officialName + '의 공약입니다. 클릭하시면 자세한 내용을 알아보실 수 있습니다.</h3></div>')
-  $('#myContainer').dialog({
-    position: {
-      my: 'right center',
-      at: 'right center+25%'
-    },
-    minHeight: 200,
-    minWidth: 450
-  })
-  promise = promises[6]
+const addButtons = function () {
+  promise = promises[Math.floor(Math.random * promises.length)]
   qs = [
     {
       content: `다음은 이 공약에 관한 설명입니다.
@@ -315,33 +306,64 @@ let addButtons = function () {
     questions()
   })
 }
-var initializePromiseList = function () {
+const initializePromiseList = function () {
   let articleArray = $('#articleBodyContents').text().trim().split('\n')
   let article = articleArray[articleArray.length - 1]
   console.log(article)
   // let data = new FormData()
   // data.append('article', article)
-  let httpPost = new XMLHttpRequest()
-  let url = 'http://34.208.245.104:3000/promise/seoul/0'
-  httpPost.onreadystatechange = function (err) {
-    if (httpPost.readyState == 4 && httpPost.status == 200) {
-      let response = JSON.parse(httpPost.responseText)
-      category = response.category
-      promises = response.promises
-      console.log(response)
-      officialName = '박원순 서울시장' // extract it from promiseList.city and promiseList.district
-      // document.getElementById('container').innerText = httpPost.responseText
-      addButtons()
-    } else {
-      $('#articleBodyContents').append(err)
-    }
+  // let httpPost = new XMLHttpRequest()
+  $('#articleBodyContents').append('<div id="myContainer" title="PromiseBook"><div id="modal"><img id="loader"></div></div>')
+  $('#modal').css({
+    'position': 'relative',
+    'top': '50%',
+    'transform': 'translateY(-50%)'
+  })
+  $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+  $('#myContainer').dialog({
+    position: {
+      my: 'right center',
+      at: 'right center+25%'
+    },
+    height: 300,
+    minWidth: 450
+  })
+  const url = 'http://34.208.245.104:8000/api/news/get_by_url/'
+  const onSuccess = function (data, textStatus, jqXHR) {
+    console.log(data)
+    category = data.categories[0]
+    promises = data.promises
+    officialName = '박원순 서울시장'
+    $('#modal').hide()
+    $('#myContainer').append('<h3>기사와 관련있는 ' + officialName + '의 공약입니다. 클릭하시면 자세한 내용을 알아보실 수 있습니다.</h3>')
+    addButtons()
+    // if (httpPost.readyState == 4 && httpPost.status == 200) {
+    //   let response = JSON.parse(httpPost.responseText)
+    //   category = response.category
+    //   promises = response.promises
+    //   console.log(response)
+    //   officialName = '박원순 서울시장' // extract it from promiseList.city and promiseList.district
+    //   // document.getElementById('container').innerText = httpPost.responseText
+    //   $('#myContainer').append('<h3>기사와 관련있는 ' + officialName + '의 공약입니다. 클릭하시면 자세한 내용을 알아보실 수 있습니다.</h3>')
+    //   addButtons()
+    // } else {
+    //   $('#articleBodyContents').append(err)
+    // }
   }
+  console.log(window.location.href)
+  const newsURL = window.location.href
+  console.log(newsURL)
+  $.get(url, {url: newsURL}, onSuccess)
+    // .done(function (){
 
-  httpPost.open('PUT', url, true)
-  httpPost.setRequestHeader('Content-Type', 'application/json')
-  let data = {"article": article}
-  console.log(JSON.stringify(data))
-  httpPost.send(JSON.stringify(data))
+    // })
+
+
+  // httpPost.open('POST', url, true)
+  // httpPost.setRequestHeader('Content-Type', 'application/json')
+  // let data = {"article": article}
+  // console.log(JSON.stringify(data))
+  // httpPost.send(JSON.stringify(data))
 }
 
 initializePromiseList()
