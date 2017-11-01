@@ -367,3 +367,4 @@ const initializePromiseList = function () {
 }
 
 initializePromiseList()
+authenticate();
