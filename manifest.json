@@ -14,7 +14,8 @@
     "tabs",
     "contextMenus",
     "http://34.208.245.104/",
-    "http://localhost:8000/oauth/*"
+    "http://localhost:8000/oauth/*",
+    "storage"
   ],
   "icons": {
     "16": "icon-16.png"
@@ -32,7 +33,7 @@
       "css": ["jquery-ui.css", "mystyle.css"]
     },
     {
-      "matches": ["http://localhost:8000/oauth/success/*"],
+      "matches": ["http://34.208.245.104:8000/oauth/success/*"],
       "js": ["oauth2/oauth2_inject.js"],
       "run_at": "document_start"
     }

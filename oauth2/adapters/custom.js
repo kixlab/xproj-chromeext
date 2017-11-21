@@ -1,4 +1,4 @@
-var host = 'http://localhost:8000';
+var host = 'http://34.208.245.104:8000';
 
 OAuth2.adapter('custom', {
   authorizationCodeURL: function(config) {
