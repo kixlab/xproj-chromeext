@@ -11,6 +11,7 @@ let category = ''
 let expenses = []
 
 const questions = function () {
+  console.log(token)
   $('#myContainer').empty()
   let str = '<h3>' + promise.title + '</h3><br>' 
   str += '<p id="questionContent">' + promptInstance.display_text + '</p>'
@@ -22,11 +23,14 @@ const questions = function () {
       $('#myContainer').append(str)
       $('#button'+i).click( ()=> {
         $.post({
-          data: JSON.stringify({
-            'Authentication': 'Bearer ' + token,
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          },
+          data: {
             'object_id': promptInstance.object.id,
             'rating': i
-          }),
+          },
           dataType: 'json',
           url: promptInstance.response_create_url
         })
@@ -56,8 +60,10 @@ const questions = function () {
         tags.push(tag)
       }
       $.post({
+        headers: {
+          'Authorization': 'Bearer ' + token
+        },
         data: JSON.stringify({
-          'Authentication': 'Bearer ' + token,
           'object_id': promptInstance.object.id,
           'tags': tags
         }),
@@ -79,8 +85,10 @@ const questions = function () {
     $('.progressButtons').click(() => {
       const text = $('#comment').val()
       $.post({
+        headers: {
+          'Authorization': 'Bearer ' + token
+        },
         data: JSON.stringify({
-          'Authentication': 'Bearer ' + token,
           'object_id': promptInstance.object.id,
           'text': text
         }),
@@ -225,14 +233,12 @@ const addButtons = async function () {
   })
 }
 const initializePromiseList = function () {
-  // console.log(chrome.storage)
-  token = localStorage['oauth2_custom']
-  let articleArray = $('#articleBodyContents').text().trim().split('\n')
-  let article = articleArray[articleArray.length - 1]
-  console.log(article)
-  // let data = new FormData()
-  // data.append('article', article)
-  // let httpPost = new XMLHttpRequest()
+
+  chrome.runtime.sendMessage({action: 'getToken'}, (response) => {
+    console.log(response)
+    token = response.token
+  })
+
   $('#articleBodyContents').append('<div id="myContainer" title="PromiseBook"><div id="modal"><img id="loader"></div></div>')
   $('#modal').css({
     'position': 'relative',

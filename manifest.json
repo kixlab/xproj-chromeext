@@ -13,9 +13,9 @@
     "activeTab",
     "tabs",
     "contextMenus",
+    "storage",
     "http://34.208.245.104/",
-    "http://localhost:8000/oauth/*",
-    "storage"
+    "http://localhost:8000/oauth/*"
   ],
   "icons": {
     "16": "icon-16.png"

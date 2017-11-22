@@ -8,6 +8,7 @@ var auth = new OAuth2('custom', {
 });
 
 function updateContextMenu() {
+    // setInterval(() => {alert('asdf')}, 1000)
     chrome.contextMenus.removeAll();
     if (auth.hasAccessToken()) {
         chrome.contextMenus.create({
@@ -68,6 +69,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             xhr.setRequestHeader('Authorization', 'Bearer ' + auth.getAccessToken());
             xhr.send();
         });
+    }
+
+    if(request.action == 'getToken') {
+        let token = auth.getAccessToken()
+        console.log(token)
+        sendResponse({token: token})
     }
 
     return true; // async response
