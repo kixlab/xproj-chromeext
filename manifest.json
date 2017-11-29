@@ -14,7 +14,7 @@
     "tabs",
     "contextMenus",
     "storage",
-    "http://34.208.245.104/",
+    "https://api.budgetwiser.org/",
     "http://localhost:8000/oauth/*"
   ],
   "icons": {
@@ -28,12 +28,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://news.naver.com/main/*"],
+      "matches": ["http://news.naver.com/main/*", "http://v.media.daum.net/v/*"],
       "js":["jquery-3.2.1.js", "jquery-ui.js", "myscript.js"],
       "css": ["jquery-ui.css", "mystyle.css"]
     },
     {
-      "matches": ["http://34.208.245.104:8000/oauth/success/*"],
+      "matches": ["https://api.budgetwiser.org/oauth/success/*"],
       "js": ["oauth2/oauth2_inject.js"],
       "run_at": "document_start"
     }

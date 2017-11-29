@@ -1,4 +1,4 @@
-var host = 'http://34.208.245.104:8000';
+var host = 'https://api.budgetwiser.org';
 
 OAuth2.adapter('custom', {
   authorizationCodeURL: function(config) {

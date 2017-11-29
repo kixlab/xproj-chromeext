@@ -27,10 +27,10 @@ const questions = function () {
             'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
           },
-          data: {
-            'object_id': promptInstance.object.id,
-            'rating': i
-          },
+          data: JSON.stringify({
+            "object_id": promptInstance.object.id,
+            "rating": i
+          }),
           dataType: 'json',
           url: promptInstance.response_create_url
         })
@@ -59,15 +59,16 @@ const questions = function () {
         tag[promptInstance.response_objects[i].id] = $('input:checkbox[id="checkbox' + i + '"]').is(':checked') ? 1 : 0
         tags.push(tag)
       }
+      console.log(tags)
       $.post({
         headers: {
-          'Authorization': 'Bearer ' + token
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          'object_id': promptInstance.object.id,
-          'tags': tags
+          "object_id": promptInstance.object.id,
+          "tags": tags
         }),
-        type: 'json',
         url: promptInstance.response_create_url
       })
       promptCount += 1
@@ -86,13 +87,13 @@ const questions = function () {
       const text = $('#comment').val()
       $.post({
         headers: {
-          'Authorization': 'Bearer ' + token
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          'object_id': promptInstance.object.id,
-          'text': text
+          "object_id": promptInstance.object.id,
+          "text": text
         }),
-        type: 'json',
         url: promptInstance.response_create_url
       })
       promptCount += 1
@@ -218,7 +219,7 @@ const addButtons = async function () {
 
   promise = promises[Math.floor(Math.random() * promises.length)]
   console.log(promise)
-  prompts = await $.get('http://34.208.245.104:8000/api/prompts')
+  prompts = await $.get('https://api.budgetwiser.org/api/prompts')
   promptInstance = await $.get(prompts.results[0].instance_url)
 
   let str = '<br><a class="promises">' + promise.title + '</a><br>'
@@ -239,11 +240,12 @@ const initializePromiseList = function () {
     token = response.token
   })
 
-  $('#articleBodyContents').append('<div id="myContainer" title="PromiseBook"><div id="modal"><img id="loader"></div></div>')
+  $('body').append('<div id="myContainer" title="PromiseBook"><div id="modal"><img id="loader"></div></div>')
   $('#modal').css({
     'position': 'relative',
     'top': '50%',
-    'transform': 'translateY(-50%)'
+    'transform': 'translateY(-50%)',
+    'text-align': 'center'
   })
   $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
   $('#myContainer').dialog({
@@ -254,7 +256,7 @@ const initializePromiseList = function () {
     height: 300,
     minWidth: 450
   })
-  const url = 'http://34.208.245.104:8000/api/news/get_by_url/'
+  const url = 'https://api.budgetwiser.org/api/news/get_by_url/'
   const onSuccess = function (data, textStatus, jqXHR) {
     console.log(data)
     category = data.categories[0]

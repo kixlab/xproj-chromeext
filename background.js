@@ -1,4 +1,4 @@
-var api_host = 'http://34.208.245.104:8000';
+var api_host = 'https://api.budgetwiser.org';
 
 var auth = new OAuth2('custom', {
     client_id: 'chromeextension',
