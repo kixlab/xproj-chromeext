@@ -7,7 +7,7 @@
   "browser_action": {
     "default_title": "News Reader",
     "default_popup": "popup.html",
-    "default_icon": "icon-16.png"
+    "default_icon": "icon-64.png"
   },
   "permissions": [
     "activeTab",
@@ -18,7 +18,8 @@
     "http://localhost:8000/oauth/*"
   ],
   "icons": {
-    "16": "icon-16.png"
+    "64": "icon-64.png",
+    "400": "icon.png"
   },
   "background": {
     "scripts": [
