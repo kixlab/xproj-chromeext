@@ -11,11 +11,14 @@ function updateContextMenu() {
     // setInterval(() => {alert('asdf')}, 1000)
     chrome.contextMenus.removeAll();
     if (auth.hasAccessToken()) {
-        chrome.contextMenus.create({
-            title: "Logged in as <>",
-            contexts: ["browser_action"],
-            enabled: false
-        });
+        var user = auth.get('user');
+        if (user) {
+            chrome.contextMenus.create({
+                title: "Logged in as " + user.username,
+                contexts: ["browser_action"],
+                enabled: false
+            });
+        }
         chrome.contextMenus.create({
             title: "Logout",
             contexts: ["browser_action"],
@@ -29,7 +32,7 @@ function updateContextMenu() {
             title: "Login",
             contexts: ["browser_action"],
             onclick: function() {
-                auth.authorize(function() {
+                getUser(function() {
                     updateContextMenu();
                 });
             }
@@ -37,6 +40,32 @@ function updateContextMenu() {
     }
 }
 updateContextMenu();
+
+function getUser(callback) {
+    auth.authorize(function() {
+        console.log('authorized, sending request');
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(event) {
+            if (xhr.readyState == 4) {
+                if(xhr.status == 200) {
+                    console.log(xhr.responseText);
+                    var data = JSON.parse(xhr.responseText);
+                    auth.set('user', data);
+                    
+                    if (callback) {
+                        callback(data);
+                    }
+                } else {
+                    // Request failure: something bad happened
+                }
+            }
+        };
+        xhr.open('GET', api_host + '/api/auth/user/', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + auth.getAccessToken());
+        xhr.send();
+    });
+}
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     console.log('background received message', request);
@@ -50,24 +79,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
     }
     if (request.action == 'getUser') {
-        auth.authorize(function() {
-            console.log('authorized, sending request');
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function(event) {
-                if (xhr.readyState == 4) {
-                    if(xhr.status == 200) {
-                        console.log(xhr.responseText);
-                        var data = JSON.parse(xhr.responseText);
-                        sendResponse(data);                
-                    } else {
-                        // Request failure: something bad happened
-                    }
-                }
-            };
-            xhr.open('GET', api_host + '/api/auth/user/', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader('Authorization', 'Bearer ' + auth.getAccessToken());
-            xhr.send();
+        getUser(function(data) {
+            sendResponse(data);      
         });
     }
 
