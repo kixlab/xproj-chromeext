@@ -1,14 +1,17 @@
 let token = ''
 let promises = []
 let promise = {}
-let qidx = 0
-let qs = []
+let promiseId = ''
 let promptInstance = {}
 let prompts = []
-let promptCount = 0
 let officialName = ''
 let category = ''
-let expenses = []
+
+const getPromiseId = function () {
+  const tokens = promise.url.split('/')
+  tokens.pop()
+  promiseId = tokens.pop()
+}
 
 const questions = function () {
   console.log(token)
@@ -28,14 +31,13 @@ const questions = function () {
             'Content-Type': 'application/json'
           },
           data: JSON.stringify({
-            "object_id": promptInstance.object.id,
+            "object_id": promiseId,
             "rating": i
           }),
           dataType: 'json',
           url: promptInstance.response_create_url
         })
-        promptCount += 1
-        $.get(prompts.results[promptCount].instance_url).then((data) => {
+        $.get(promptInstance.next_prompt_instance, {"object_id": promiseId}).then((data) => {
           console.log(data)
           promptInstance = data
           questions()
@@ -66,13 +68,12 @@ const questions = function () {
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          "object_id": promptInstance.object.id,
+          "object_id": promiseId,
           "tags": tags
         }),
         url: promptInstance.response_create_url
       })
-      promptCount += 1
-      $.get(prompts.results[promptCount].instance_url).then((data) => {
+      $.get(promptInstance.next_prompt_instance, {"object_id": promiseId}).then((data) => {
         console.log(data)
         promptInstance = data
         questions()
@@ -91,145 +92,41 @@ const questions = function () {
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          "object_id": promptInstance.object.id,
+          "object_id": promiseId,
           "text": text
         }),
         url: promptInstance.response_create_url
       })
-      promptCount += 1
-      $.get(prompts.results[promptCount].instance_url).then((data) => {
+      $.get(promptInstance.next_prompt_instance, {"object_id": promiseId}).then((data) => {
         console.log(data)
         promptInstance = data
         questions()
       })
     })
   }
-  // if (qs[qidx].type === 'fourchoices') {
-  //   str += '<br>'
-  //   str += '<button class="buttons progressButtons backButton">해당없음</button> <button class="buttons progressButtons noneButton">1번</button> '         
-  //   str += '<button class="buttons progressButtons okButton">2번</button> <button class="buttons progressButtons completeButton">3번</button>'   
-  //   $('#myContainer').append(str)
-  //   $('.backButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 0
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })
-  //   $('.noneButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 1
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })
-  //   $('.okButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 2
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })    
-  //   $('.completeButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 3
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })
-  // } else if (qs[qidx].type === 'likert') {
-  //   str += '<br>'
-  //   str += '<button class="buttons progressButtons oneButton">매우 아니다</button> <button class="buttons progressButtons twoButton">아니다</button> '         
-  //   str += '<button class="buttons progressButtons threeButton">보통</button> <button class="buttons progressButtons fourButton">그렇다</button> <button class="buttons progressButtons fiveButton">매우 그렇다</button>'   
-  //   $('#myContainer').append(str)
-  //   $('.oneButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 1
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })
-  //   $('.twoButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 2
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })    
-  //   $('.threeButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 3
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })
-  //   $('.fourButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 4
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })
-  //   $('.fiveButton').click(function () {
-  //     $.post('http://34.208.245.104:3000/promise/seoul/0/' + promise.key, {
-  //       question: qs[qidx].content,
-  //       score: 5
-  //     })
-  //     qidx += 1
-  //     questions()
-  //   })
-  // }
-  // else if (qs[qidx].type === 'openended') {
-  //   str += '<textarea id="opinionInput"></textarea> <br><button id="submitButton" class="submitButton">의견 보내기</button>'
-  //   $('#myContainer').append(str)    
-  //   $('#submitButton').click(function(ev){
-  //     $('#submitButton').remove()
-  //     $('#opinionInput').remove()
-  //     //TODO: store text in DB
-  //     // $('#questionContent').append('')
-  //     qidx += 1
-  //     questions()
-  //   })    
-  // }
-  // else if (qs[qidx].type === 'end') {
-  //   // str += '<input type="text" id="opinionInput"> <button id="submitButton" class="submitButton">의견 보내기</button>'
-  //   str += '<br><button id="finButton">다른 공약 보기</button>'
-  //   $('#myContainer').append(str)    
-  //   // $('#submitButton').click(function(ev){
-  //   //   $('#submitButton').remove()
-  //   //   $('#opinionInput').remove()
-  //   //   // $('#questionContent').append('')
-  //   // })    
-  //   $('#finButton').click(function (ev) {
-  //     $('#myContainer').remove()
-  //     addButtons()
-  //   })
-  // }
 }
-const addButtons = async function () {
+const addButtons = function () {
+  $('#myContainer').append('<h3>기사와 관련있는 ' + officialName + '의 공약입니다. 클릭하시면 자세한 내용을 알아보실 수 있습니다.</h3>')  
   console.log(promises)
 
   promise = promises[Math.floor(Math.random() * promises.length)]
   console.log(promise)
-  prompts = await $.get('https://api.budgetwiser.org/api/prompts')
-  promptInstance = await $.get(prompts.results[0].instance_url)
+  getPromiseId()
 
   let str = '<br><a class="promises">' + promise.title + '</a><br>'
   $('#myContainer').append(str)
   $('#myContainer').append('<a id="noneBtn">다른 공약 보기</a>')
   $('#noneBtn').click(function (ev) {
-    $('#myContainer').remove()
+    $('#myContainer').empty()
     addButtons()
   })
-  $('.promises').click(function (ev) {
+  $('.promises').click(async function (ev) {
+    prompts = await $.get('https://api.budgetwiser.org/api/prompt-sets/chrome-extension/', {
+      "object_id": promiseId
+    })
+    promptInstance = await $.get(prompts.next_prompt_instance, {
+      "object_id": promiseId
+    })
     questions()
   })
 }
@@ -263,7 +160,6 @@ const initializePromiseList = function () {
     promises = data.promises
     officialName = '박원순 서울시장'
     $('#modal').hide()
-    $('#myContainer').append('<h3>기사와 관련있는 ' + officialName + '의 공약입니다. 클릭하시면 자세한 내용을 알아보실 수 있습니다.</h3>')
     addButtons()
   }
   const newsURL = window.location.href
