@@ -2,6 +2,8 @@ let token = ''
 let promises = []
 let promise = {}
 let promiseId = ''
+let budgetId = ''
+let budgetIds = []
 let promptInstance = {}
 let prompts = []
 let officialName = ''
@@ -12,7 +14,50 @@ const getPromiseId = function () {
   tokens.pop()
   promiseId = tokens.pop()
 }
+const getObjectId = function (objectType) {
+  if(objectType === 'promise'){
+    return promiseId
+  } else if(objectType === 'budget program'){
+    return budgetId
+  }
+}
+const getResponseObjectIds = function (responseObjectType){
+  if(!responseObjectType){
+    return []
+  }
+  else if(responseObjectType === 'budget program'){
+    return budgetIds
+  }
+}
+const setResponseObjectIds = function (promptInstance) {
+  let objectIds = getResponseObjectIds(promptInstance.prompt.response_object_type)
+  if(objectIds.length === 0){
+    promptInstance.response_objects.forEach(function(o){
+      objectIds.push(o.id)
+    })
+  }
+  console.log(objectIds)
+}
+const setObjectId = function (promptInstance) {
+  let objectId = getObjectId(promptInstance.prompt.response_object_type)
+  if(objectId === ''){
+    const randomObject = promptInstance.response_objects[Math.floor(Math.random() * promptInstance.response_objects.length)]
+    if(promptInstance.prompt.response_object_type === 'budget program'){
+      budgetId = randomObject.id
+    }
+    // objectId = randomObject.id
+  }
+}
 
+const promptEnd = function () {
+  $('#myContainer').empty()
+  let str = `<h3>응답해주셔서 감사합니다.</h3><br><button class="progressButtons" id="endButton">닫기</button>`
+  $('#myContainer').append(str)
+  $('#endButton').click(function () {
+    $('#myContainer').remove()
+  })
+
+}
 const questions = function () {
   console.log(token)
   $('#myContainer').empty()
@@ -31,13 +76,16 @@ const questions = function () {
             'Content-Type': 'application/json'
           },
           data: JSON.stringify({
-            "object_id": promiseId,
+            "object_id": getObjectId(promptInstance.prompt.prompt_object_type),
             "rating": i
           }),
           dataType: 'json',
           url: promptInstance.response_create_url
         })
-        $.get(promptInstance.next_prompt_instance, {"object_id": promiseId}).then((data) => {
+        if(!promptInstance.next_prompt_instance) {
+          promptEnd()
+        }
+        $.get(promptInstance.next_prompt_instance, {"object_id": getObjectId(promptInstance.next_prompt.prompt_object_type)}).then((data) => {
           console.log(data)
           promptInstance = data
           questions()
@@ -58,9 +106,13 @@ const questions = function () {
       const tags = []
       for(let i = 0; i < promptInstance.response_objects.length; i++){
         const tag = {}
-        tag[promptInstance.response_objects[i].id] = $('input:checkbox[id="checkbox' + i + '"]').is(':checked') ? 1 : 0
+        tag['rating'] = $('input:checkbox[id="checkbox' + i + '"]').is(':checked') ? 1 : 0
+        tag['object_id'] = promptInstance.response_objects[i].id
         tags.push(tag)
       }
+      setObjectId(promptInstance)
+      setResponseObjectIds(promptInstance)
+
       console.log(tags)
       $.post({
         headers: {
@@ -68,12 +120,23 @@ const questions = function () {
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          "object_id": promiseId,
+          "object_id": getObjectId(promptInstance.prompt.prompt_object_type),
           "tags": tags
         }),
         url: promptInstance.response_create_url
       })
-      $.get(promptInstance.next_prompt_instance, {"object_id": promiseId}).then((data) => {
+      if(!promptInstance.next_prompt_instance) {
+        promptEnd()
+      }
+      const payload = {
+        "object_id": getObjectId(promptInstance.next_prompt.prompt_object_type),
+      }
+      if(promptInstance.next_prompt.response_object_type === promptInstance.prompt.response_object_type){
+        payload['response_object_ids'] = getResponseObjectIds(promptInstance.next_prompt.response_object_type).reduce(function(prev, cur){
+          return prev + ',' + cur
+        })
+      }
+      $.get(promptInstance.next_prompt_instance, payload).then((data) => {
         console.log(data)
         promptInstance = data
         questions()
@@ -92,12 +155,15 @@ const questions = function () {
           'Content-Type': 'application/json'
         },
         data: JSON.stringify({
-          "object_id": promiseId,
+          "object_id": getObjectId(promptInstance.prompt.prompt_object_type),
           "text": text
         }),
         url: promptInstance.response_create_url
       })
-      $.get(promptInstance.next_prompt_instance, {"object_id": promiseId}).then((data) => {
+      if(!promptInstance.next_prompt_instance) {
+        promptEnd()
+      }
+      $.get(promptInstance.next_prompt_instance, {"object_id": getObjectId(promptInstance.next_prompt.prompt_object_type)}).then((data) => {
         console.log(data)
         promptInstance = data
         questions()
