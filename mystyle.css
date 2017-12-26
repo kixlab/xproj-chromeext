@@ -83,13 +83,14 @@
 }
 
 .progressButtons {
-  background-color: #2185d0; /* Green */
+  background-color: #0284A8; /* Green */
   border: none;
   color: white;
   padding: 3px 8px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  margin: 0.1em;
   /* float: right; */
 }
 
@@ -102,4 +103,64 @@
   text-decoration: none;
   display: inline-block;
   /* float: right; */
+}
+
+.promiseTitle {
+  margin-bottom: 0.6em;
+}
+
+.questionContent {
+  margin-bottom: 0.6em;
+}
+
+.promiseTitle h3 {
+  color: #02547d;
+}
+
+.promiseBook {
+  text-align: center;
+  background-color: #02547d;
+  color: white;
+  border-color: grey;
+  padding: 3px 8px;
+  width: auto;
+  font-family: 'NanumGothic';
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+#myContainer {
+  background-color: #ffffff;
+  text-align: center;
+  padding: 0.3em 1em;
+  width: auto;
+  border-color: grey;
+  font-family: 'NanumGothic';
+}
+
+#myContainer .prompt {
+  font-family: 'NanumGothic';
+  font-size: 1em;
+  text-align: left;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+#myContainer .promiseTitleButton {
+  background: #02547d;
+  font-family: 'NanumGothic';
+  color: white;
+  font-size: 1em;
+  padding: 0.3em 0.5em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+  /* margin: auto; */
+  word-break: keep-all;
+  cursor: pointer;
+}
+
+#myContainer .likertLabels {
+  font-size: 0.8em;
+  display: inline-block;
+  margin: 0.1em;
 }
