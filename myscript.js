@@ -1,18 +1,31 @@
 let token = ''
 let promises = []
-let promise = {}
+let object = {}
 let promiseId = ''
 let budgetId = ''
 let budgetIds = []
 let promptInstance = {}
 let prompts = []
+let curPromptIdx = 0
 let officialName = ''
 let category = ''
+let labels = ['중요도', '관련도','인지도','선호도','이행도', '관련 사업']
 
-const getPromiseId = function () {
-  const tokens = promise.url.split('/')
+const setPrompts = async function (promptSetName, objectId) {
+  prompts = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${promptSetName}/`, {
+    "object_id": objectId
+  })
+  promptInstance = await $.get(prompts.next_prompt_instance, {
+    "object_id": objectId
+  })
+  curPromptIdx = 0
+  questions()
+}
+
+const getPromiseId = function (url) {
+  const tokens = url.split('/')
   tokens.pop()
-  promiseId = tokens.pop()
+  return tokens.pop()
 }
 const getObjectId = function (objectType) {
   if(objectType === 'promise'){
@@ -59,16 +72,17 @@ const promptEnd = function () {
 
 }
 const questions = function () {
-  console.log(token)
+  curPromptIdx += 1
   $('#myContainer').empty()
-  let str = '<div class="promiseTitle"><h3>' + promise.title + '</h3></div>' 
+  let str = '<div class="promiseTitle"><h3>' + object.title + '</h3></div>' 
   str += '<div class="questionContent">' + promptInstance.display_text + '</div>'
   $('#myContainer').append(str)
   console.log(promptInstance)
   if(promptInstance.prompt.type === 'likert') {
     $('#myContainer').append('<div class="likertLabels">매우<br>아니다</div>')
     for(let i = promptInstance.prompt.scale_min; i <= promptInstance.prompt.scale_max; i++){
-      str = '<button class="buttons progressButtons" id="button' + i + '">' + i + '</button>'
+      str = `<button class="progressButtons" id="button${i}">${i}</button>`
+      // '<button class="buttons progressButtons" id="button' + i + '">' + i + '</button>'
       $('#myContainer').append(str)
       $('#button'+i).click( ()=> {
         $.post({
@@ -95,55 +109,67 @@ const questions = function () {
     }
     $('#myContainer').append('<div class="likertLabels">매우<br>그렇다</div>')
   } else if (promptInstance.prompt.type === 'tagging') {
-    for(let i = 0; i < promptInstance.response_objects.length; i++){
-      str = '<div>'
-      str += '<input id="checkbox' + i + '"type="checkbox">'
-      str += '<label for="checkbox' + i + '">' + promptInstance.response_objects[i].__str__ + '</label>'
-      str += '</div>'
+    // for(let i = 0; i < promptInstance.response_objects.length; i++){
+    //   str = '<div>'
+    //   str += '<input id="checkbox' + i + '"type="checkbox">'
+    //   str += '<label for="checkbox' + i + '">' + promptInstance.response_objects[i].__str__ + '</label>'
+    //   str += '</div>'
+    //   $('#myContainer').append(str)
+    // }
+    promptInstance.response_objects.forEach(function(obj){
+      str = `<button class="tagButtons" id="button${obj.id}">${obj.__str__}</button>`
       $('#myContainer').append(str)
-    }
-    str = '<button class="progressButtons">다음</button>'
-    $('#myContainer').append(str)
-    $('.progressButtons').click(() => {
-      const tags = []
-      for(let i = 0; i < promptInstance.response_objects.length; i++){
-        const tag = {}
-        tag['rating'] = $('input:checkbox[id="checkbox' + i + '"]').is(':checked') ? 1 : 0
-        tag['object_id'] = promptInstance.response_objects[i].id
-        tags.push(tag)
-      }
-      setObjectId(promptInstance)
-      setResponseObjectIds(promptInstance)
-
-      console.log(tags)
-      $.post({
-        headers: {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          "object_id": getObjectId(promptInstance.prompt.prompt_object_type),
-          "tags": tags
-        }),
-        url: promptInstance.response_create_url
-      })
-      if(!promptInstance.next_prompt_instance) {
-        promptEnd()
-      }
-      const payload = {
-        "object_id": getObjectId(promptInstance.next_prompt.prompt_object_type),
-      }
-      if(promptInstance.next_prompt.response_object_type === promptInstance.prompt.response_object_type){
-        payload['response_object_ids'] = getResponseObjectIds(promptInstance.next_prompt.response_object_type).reduce(function(prev, cur){
-          return prev + ',' + cur
-        })
-      }
-      $.get(promptInstance.next_prompt_instance, payload).then((data) => {
-        console.log(data)
-        promptInstance = data
-        questions()
+      $(`#button${obj.id}`).click((ev) => {
+        budgetId = obj.id
+        object = obj
+        object.title = obj.__str__
+        console.log(object)
+        setPrompts('chrome-extension-budget', budgetId)
       })
     })
+    // str = '<button class="progressButtons">다음</button>'
+    // $('#myContainer').append(str)
+    // $('.progressButtons').click((ev) => {
+
+    //   // const tags = []
+    //   // for(let i = 0; i < promptInstance.response_objects.length; i++){
+    //   //   const tag = {}
+    //   //   tag['rating'] = $('input:checkbox[id="checkbox' + i + '"]').is(':checked') ? 1 : 0
+    //   //   tag['object_id'] = promptInstance.response_objects[i].id
+    //   //   tags.push(tag)
+    //   // }
+    //   // setObjectId(promptInstance)
+    //   // setResponseObjectIds(promptInstance)
+
+    //   // console.log(tags)
+    //   // $.post({
+    //   //   headers: {
+    //   //     'Authorization': 'Bearer ' + token,
+    //   //     'Content-Type': 'application/json'
+    //   //   },
+    //   //   data: JSON.stringify({
+    //   //     "object_id": getObjectId(promptInstance.prompt.prompt_object_type),
+    //   //     "tags": tags
+    //   //   }),
+    //   //   url: promptInstance.response_create_url
+    //   // })
+    //   // if(!promptInstance.next_prompt_instance) {
+    //   //   promptEnd()
+    //   // }
+    //   // const payload = {
+    //   //   "object_id": getObjectId(promptInstance.next_prompt.prompt_object_type),
+    //   // }
+    //   // if(promptInstance.next_prompt.response_object_type === promptInstance.prompt.response_object_type){
+    //   //   payload['response_object_ids'] = getResponseObjectIds(promptInstance.next_prompt.response_object_type).reduce(function(prev, cur){
+    //   //     return prev + ',' + cur
+    //   //   })
+    //   // }
+    //   // $.get(promptInstance.next_prompt_instance, payload).then((data) => {
+    //   //   console.log(data)
+    //   //   promptInstance = data
+    //   //   questions()
+    //   // })
+    // })
   } else if (promptInstance.prompt.type === 'openended') {
     str = '<input type="text" id="comment"></input>'
     $('#myContainer').append(str)
@@ -172,56 +198,50 @@ const questions = function () {
       })
     })
   }
+  $('#myContainer').append(`<div id="progressIndicator"></div>`)
+  for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
+    str = ''
+    if (i < curPromptIdx){
+      str += `<div class="progressIndicator done">${labels[i-1]}</div>`
+    } else if (i == curPromptIdx){
+      str += `<div class="progressIndicator current">${labels[i-1]}</div>`
+    } else {
+      str += `<div class="progressIndicator notyet">${labels[i-1]}</div>`
+    }
+    $('#progressIndicator').append(str)
+  }
 
 }
 const addButtons = function () {
   $('#myContainer').empty()
   $('#myContainer').append('<div class="prompt">이 기사와 관련있는 ' + officialName + '의 공약입니다.</div>')  
-  promise = promises[Math.floor(Math.random() * promises.length)]
-  getPromiseId()
-  let str = '<button class="promiseTitleButton">' + promise.title + '</button>'
+  object = promises[Math.floor(Math.random() * promises.length)]
+  // console.log(promises)
+  promiseId = object.object_id
+  let str = '<button class="promiseTitleButton">' + object.title + '</button>'
   $('#myContainer').append(str)
   $('#myContainer').append('<div class="prompt">이 공약에 대한 의견을 남겨주세요.</div>')
-  // $('#myContainer').append('<a id="noneBtn">다른 공약 보기</a>')
+  $('#myContainer').append('<a id="noneBtn">다른 공약 보기</a>')
   $('#noneBtn').click(function (ev) {
     $('#myContainer').empty()
     addButtons()
   })
-  $('.promiseTitleButton').click(async function (ev) {
-    prompts = await $.get('https://api.budgetwiser.org/api/prompt-sets/chrome-extension/', {
-      "object_id": promiseId
-    })
-    promptInstance = await $.get(prompts.next_prompt_instance, {
-      "object_id": promiseId
-    })
-    questions()
+  $('.promiseTitleButton').click(function(ev) {
+    setPrompts('chrome-extension-promise', promiseId)
   })
 }
 const initializePromiseList = function () {
   chrome.runtime.sendMessage({action: 'getToken'}, (response) => {
     token = response.token
   })
-  // $('.da').empty()
-  // $('.da').append('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>')
-  // // $('#modal').css({
-  // //   'position': 'relative',
-  // //   'top': '50%',
-  // //   'transform': 'translateY(-50%)',
-  // //   'text-align': 'center'
-  // // })
-  // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-  // // $('#myContainer').dialog({
-  // //   position: {
-  // //     my: 'right center',
-  // //     at: 'right center+25%'
-  // //   },
-  // //   height: 300,
-  // //   minWidth: 450
-  // // })
   const url = 'https://api.budgetwiser.org/api/news/get_by_url/'
   const onSuccess = function (data, textStatus, jqXHR) {
     category = data.categories[0]
     promises = data.promises
+    console.log(data.categories)
+    promises.forEach((promise) => {
+      promise.object_id = getPromiseId(promise.url)
+    })
     officialName = '박원순 서울시장'
     addButtons()
   }

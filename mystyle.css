@@ -1,9 +1,18 @@
-#myContainer {
+/* #myContainer {
   width: 100%;
   border: 1px solid black;
-}
-.ui-dialog {
+} */
+/* .ui-dialog {
   position: fixed !important;  
+} */
+
+#myContainer {
+  background-color: #ffffff;
+  text-align: center;
+  padding: 0.3em 0.7em;
+  width: auto;
+  border: 1px solid #DBDBDB;
+  font-family: 'NanumGothic';
 }
 #myContainer a { 
   color: blue; 
@@ -27,83 +36,97 @@
   word-break: break-all;
 }
 
-.yesButton {
-  background-color: #4CAF50; /* Green */
+/* .yesButton {
+  background-color: #4CAF50;
   border: none;
   color: white;
   padding: 7px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  /* float: right; */
+
 }
 
 .dontknow {
-  background-color: #999999; /* Green */
+  background-color: #999999;
   border: none;
   color: white;
   padding: 7px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  /* float: right; */
+
 }
 
 .submitButton {
-  background-color: #4CAF50; /* Green */
+  background-color: #4CAF50; 
   border: none;
   color: white;
   padding: 3px 8px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  /* float: right; */
+
 }
 
 .noButton {
-  background-color: #f44336; /* Green */
+  background-color: #f44336; 
   border: none;
   color: white;
   padding: 7px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  /* float: right; */
-}
+} */
 
 #finButton {
-  background-color: #2185d0; /* Green */
+  background-color: #2185d0; 
   border: none;
   color: white;
-  padding: 3px 8px;
+  padding: 0.25em 0.5em;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  /* float: right; */
 }
 
 .progressButtons {
-  background-color: #0284A8; /* Green */
+  background-color: #0284A8;
   border: none;
   color: white;
-  padding: 3px 8px;
+  padding: 0.25em 0.5em;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   margin: 0.1em;
+  cursor: pointer;
   /* float: right; */
 }
 
-.dontknowProgress{
-  background-color: #999999; /* Green */
+.tagButtons {
+  background-color: #0284A8;
+  border: none;
+  color: white;
+  padding: 0.25em 0.5em;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  margin: 0.1em;
+  cursor: pointer;
+  font-size: 1em;
+  height: 2em;
+  /* float: right; */
+}
+/* .dontknowProgress{
+  background-color: #999999; 
   border: none;
   color: white;
   padding: 3px 8px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  /* float: right; */
-}
+
+} */
 
 .promiseTitle {
   margin-bottom: 0.6em;
@@ -129,14 +152,7 @@
   font-weight: bold;
 }
 
-#myContainer {
-  background-color: #ffffff;
-  text-align: center;
-  padding: 0.3em 1em;
-  width: auto;
-  border-color: grey;
-  font-family: 'NanumGothic';
-}
+
 
 #myContainer .prompt {
   font-family: 'NanumGothic';
@@ -147,7 +163,7 @@
 }
 
 #myContainer .promiseTitleButton {
-  background: #02547d;
+  background: #0284A8;
   font-family: 'NanumGothic';
   color: white;
   font-size: 1em;
@@ -164,3 +180,29 @@
   display: inline-block;
   margin: 0.1em;
 }
+
+#myContainer .progressIndicator {
+  display: inline-block;
+  height: 1.6em;
+  margin: 0.2em;
+  padding: 0.2em;
+  /* width:  */
+  font-size: 0.8em;
+}
+
+#myContainer .progressIndicator.done {
+  background-color: #02BEC4;
+  color: white;
+}
+
+#myContainer .progressIndicator.current {
+  background-color: #02BEC4;
+  color: white;
+}
+
+#myContainer .progressIndicator.notyet {
+  background-color: #E1F7E7;
+  color: #0284a8;
+}
+
+/* color scheme from https://color.adobe.com/ko/sea-waves-color-theme-10331668/ */
