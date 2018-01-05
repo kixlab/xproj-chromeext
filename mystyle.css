@@ -15,21 +15,21 @@
   font-family: 'NanumGothic';
 }
 #myContainer a { 
-  color: blue; 
+  color: #02547d; 
   text-decoration: none;
   white-space: normal;
   word-wrap: break-word;
   word-break: break-all;
 }
 #myContainer a:visited { 
-  color: blue; 
+  color: #02547d; 
   text-decoration: none;
   white-space: normal;
   word-wrap: break-word;
   word-break: break-all;
 }
 #myContainer a:hover { 
-  color: blue; 
+  color: #02547d; 
   text-decoration: underline;
   white-space: normal;
   word-wrap: break-word;
@@ -205,4 +205,7 @@
   color: #0284a8;
 }
 
+#noneBtn {
+  cursor: pointer;
+}
 /* color scheme from https://color.adobe.com/ko/sea-waves-color-theme-10331668/ */

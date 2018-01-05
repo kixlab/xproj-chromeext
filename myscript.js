@@ -64,10 +64,11 @@ const setObjectId = function (promptInstance) {
 
 const promptEnd = function () {
   $('#myContainer').empty()
-  let str = `<h3>응답해주셔서 감사합니다.</h3><br><button class="progressButtons" id="endButton">닫기</button>`
+  let str = `<h3>응답해주셔서 감사합니다.</h3><br><button class="progressButtons" id="endButton">다른 공약 보기</button>`
   $('#myContainer').append(str)
   $('#endButton').click(function () {
-    $('#myContainer').remove()
+    $('#myContainer').empty()
+    addButtons()
   })
 
 }
@@ -214,7 +215,7 @@ const questions = function () {
 }
 const addButtons = function () {
   $('#myContainer').empty()
-  $('#myContainer').append('<div class="prompt">이 기사와 관련있는 ' + officialName + '의 공약입니다.</div>')  
+  $('#myContainer').append(`<div class="prompt">이 기사와 관련있는 ${officialName}의 공약입니다.</div>`)  
   object = promises[Math.floor(Math.random() * promises.length)]
   // console.log(promises)
   promiseId = object.object_id
@@ -246,11 +247,22 @@ const initializePromiseList = function () {
     addButtons()
   }
   const newsURL = window.location.href
+  console.log(newsURL)
   if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
     $('.da').empty()
     $('.da').append('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>')
     $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     $.get(url, {url: newsURL}, onSuccess)
+  } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
+    // setInterval(() => {
+      // if($('.daum_ddn_area').length){
+        $('.hcg_media_pc_mAside').prepend('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>')
+        $('.daum_ddn_area').remove()
+        $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+        $.get(url, {url: newsURL}, onSuccess)
+    //     clearInterval()
+    //   }
+    // }, 5000)
   }
 }
 
