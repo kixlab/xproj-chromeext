@@ -10,6 +10,7 @@ let curPromptIdx = 0
 let officialName = ''
 let category = ''
 let labels = ['중요도', '관련도','인지도','선호도','이행도', '관련 사업']
+let chart = {}
 
 const setPrompts = async function (promptSetName, objectId) {
   prompts = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${promptSetName}/`, {
@@ -211,7 +212,6 @@ const questions = function () {
     }
     $('#progressIndicator').append(str)
   }
-
 }
 const addButtons = function () {
   $('#myContainer').empty()
@@ -250,19 +250,25 @@ const initializePromiseList = function () {
   console.log(newsURL)
   if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
     $('.da').empty()
-    $('.da').append('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>')
+    $('.da').append('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div><canvas id="myChart" width="70%" height="70%"></canvas>')
     $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     $.get(url, {url: newsURL}, onSuccess)
+    let ctx = document.getElementById('myChart').getContext('2d')
+    chart = new Chart(ctx, {
+      type: 'radar',
+      label: '점수',
+      data: {
+        labels: labels,
+        datasets: [{
+            data: [1, 2, 3, 4, 5, 4]
+        }]
+      }
+    })
   } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
-    // setInterval(() => {
-      // if($('.daum_ddn_area').length){
-        $('.hcg_media_pc_mAside').prepend('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>')
-        $('.daum_ddn_area').remove()
-        $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-        $.get(url, {url: newsURL}, onSuccess)
-    //     clearInterval()
-    //   }
-    // }, 5000)
+    $('.hcg_media_pc_mAside').prepend('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div><canvas id="myChart" width="70%" height="70%"></canvas>')
+    $('.daum_ddn_area').remove()
+    $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+    $.get(url, {url: newsURL}, onSuccess)
   }
 }
 

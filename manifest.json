@@ -6,7 +6,6 @@
   "version": "1.0",
   "browser_action": {
     "default_title": "News Reader",
-    "default_popup": "popup.html",
     "default_icon": "icon-64.png"
   },
   "permissions": [
@@ -30,8 +29,8 @@
   "content_scripts": [
     {
       "matches": ["http://news.naver.com/main/*", "http://v.media.daum.net/v/*"],
-      "js":["jquery-3.2.1.js", "jquery-ui.js", "myscript.js"],
-      "css": ["jquery-ui.css", "mystyle.css"]
+      "js":["jquery-3.2.1.js", "Chart.min.js", "myscript.js"],
+      "css": ["mystyle.css"]
     },
     {
       "matches": ["https://api.budgetwiser.org/oauth/success/*"],
