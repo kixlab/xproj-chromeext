@@ -64,7 +64,7 @@ const setObjectId = function (promptInstance) {
 
 const promptEnd = function () {
   $('#myContainer').empty()
-  let str = `<h3>응답해주셔서 감사합니다.</h3><br><button class="progressButtons" id="endButton">다른 공약 보기</button>`
+  let str = `<h3>응답해주셔서 감사합니다.</h3>다른 공약에 대한 의견도 남겨주세요!<br><button class="progressButtons" id="endButton">다른 공약 보기</button>`
   $('#myContainer').append(str)
   $('#endButton').click(function () {
     $('#myContainer').empty()
@@ -250,21 +250,25 @@ const initializePromiseList = function () {
   console.log(newsURL)
   const myContainer = '<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>'
   if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
-    $('.da').empty()
-    $('.da').append(myContainer)
+    // $('.da').empty()
+    // $('.da').append(myContainer)
+    $(myContainer).insertAfter($('#articleBodyContents'))
   } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
-    $('.hcg_media_pc_mAside').prepend(myContainer)
-    $('.daum_ddn_area').remove()
+    // $('.hcg_media_pc_mAside').prepend(myContainer)
+    // $('.daum_ddn_area').remove()
     // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     // $.get(url, {url: newsURL}, onSuccess)
+    $(myContainer).insertAfter($('.news_view'))
   } else if (newsURL.startsWith('http://news.chosun.com/site/data')) {
     console.log('asdf')
-    $('.news_aside').prepend(myContainer)
-    $('.art_ad_aside').remove()
+    // $('.news_aside').prepend(myContainer)
+    // $('.art_ad_aside').remove()
     // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     // $.get(url, {url: newsURL}, onSuccess)
+    $(myContainer).insertAfter($('.par'))
   } else if(newsURL.startsWith('http://www.hani.co.kr')) {
-    $('#ad_kisa_r01').empty().append(myContainer)
+    // $('#ad_kisa_r01').empty().append(myContainer)
+    $(myContainer).insertAfter($('.article-text'))
   }
   $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
   $.get(url, {url: newsURL}, onSuccess)
