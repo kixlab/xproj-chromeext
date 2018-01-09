@@ -248,22 +248,26 @@ const initializePromiseList = function () {
   }
   const newsURL = window.location.href
   console.log(newsURL)
+  const myContainer = '<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>'
   if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
     $('.da').empty()
-    $('.da').append('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>')
-    $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-    $.get(url, {url: newsURL}, onSuccess)
+    $('.da').append(myContainer)
   } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
-    // setInterval(() => {
-      // if($('.daum_ddn_area').length){
-        $('.hcg_media_pc_mAside').prepend('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>')
-        $('.daum_ddn_area').remove()
-        $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-        $.get(url, {url: newsURL}, onSuccess)
-    //     clearInterval()
-    //   }
-    // }, 5000)
+    $('.hcg_media_pc_mAside').prepend(myContainer)
+    $('.daum_ddn_area').remove()
+    // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+    // $.get(url, {url: newsURL}, onSuccess)
+  } else if (newsURL.startsWith('http://news.chosun.com/site/data')) {
+    console.log('asdf')
+    $('.news_aside').prepend(myContainer)
+    $('.art_ad_aside').remove()
+    // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+    // $.get(url, {url: newsURL}, onSuccess)
+  } else if(newsURL.startsWith('http://www.hani.co.kr')) {
+    $('#ad_kisa_r01').empty().append(myContainer)
   }
+  $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+  $.get(url, {url: newsURL}, onSuccess)
 }
 
 initializePromiseList()
