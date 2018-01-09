@@ -10,6 +10,7 @@ let curPromptIdx = 0
 let officialName = ''
 let category = ''
 let labels = ['중요도', '관련도','인지도','선호도','이행도', '관련 사업']
+let chart = {}
 
 const setPrompts = async function (promptSetName, objectId) {
   prompts = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${promptSetName}/`, {
@@ -211,7 +212,6 @@ const questions = function () {
     }
     $('#progressIndicator').append(str)
   }
-
 }
 const addButtons = function () {
   $('#myContainer').empty()
@@ -258,7 +258,7 @@ const initializePromiseList = function () {
     // $('.daum_ddn_area').remove()
     // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     // $.get(url, {url: newsURL}, onSuccess)
-    $(myContainer).insertAfter($('.news_view'))
+    $(myContainer).insertAfter($('.article_view'))
   } else if (newsURL.startsWith('http://news.chosun.com/site/data')) {
     console.log('asdf')
     // $('.news_aside').prepend(myContainer)
@@ -272,6 +272,7 @@ const initializePromiseList = function () {
   }
   $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
   $.get(url, {url: newsURL}, onSuccess)
+  
 }
 
 initializePromiseList()
