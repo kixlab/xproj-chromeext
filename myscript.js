@@ -132,6 +132,21 @@ const questions = function () {
       })
     }
     $('#myContainer').append('<div class="likertLabels">매우<br>그렇다</div>')
+    $('#myContainer').append(`<div id="progressIndicator"></div>`)
+    for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
+      if(!labels[i-1]){
+        break
+      }
+      str = ''
+      if (i < curPromptIdx){
+        str += `<div class="progressIndicator done">${labels[i-1]}</div>`
+      } else if (i == curPromptIdx){
+        str += `<div class="progressIndicator current">${labels[i-1]}</div>`
+      } else {
+        str += `<div class="progressIndicator notyet">${labels[i-1]}</div>`
+      }
+      $('#progressIndicator').append(str)
+    }
   } else if (promptInstance.prompt.type === 'tagging') {
     // for(let i = 0; i < promptInstance.response_objects.length; i++){
     //   str = '<div>'
@@ -145,7 +160,8 @@ const questions = function () {
     $('#myContainer').append('<canvas id="myChart" width="100%" height="100%"></canvas>')
     $('#myContainer').append('<button id="showBudgets" class="promiseTitleButton">관련 사업 보기</button>')
     $('#showBudgets').click(function () {
-      $('#myContainer').empty().append(str)
+      $('#myContainer').empty()
+      $('#myContainer').append(str)
       promptInstance.response_objects.forEach(function(obj){
         str = `<button class="tagButtons" id="button${obj.id}">${obj.__str__}</button>`
         $('#myContainer').append(str)
@@ -157,6 +173,21 @@ const questions = function () {
           setPrompts('chrome-extension-budget', budgetId)
         })
       })
+      $('#myContainer').append(`<div id="progressIndicator"></div>`)
+      for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
+        if(!labels[i-1]){
+          break
+        }
+        str = ''
+        if (i < curPromptIdx){
+          str += `<div class="progressIndicator done">${labels[i-1]}</div>`
+        } else if (i == curPromptIdx){
+          str += `<div class="progressIndicator current">${labels[i-1]}</div>`
+        } else {
+          str += `<div class="progressIndicator notyet">${labels[i-1]}</div>`
+        }
+        $('#progressIndicator').append(str)
+      }
     })
 
     showCharts([{
@@ -235,21 +266,7 @@ const questions = function () {
       })
     })
   }
-  $('#myContainer').append(`<div id="progressIndicator"></div>`)
-  for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
-    if(!labels[i-1]){
-      break
-    }
-    str = ''
-    if (i < curPromptIdx){
-      str += `<div class="progressIndicator done">${labels[i-1]}</div>`
-    } else if (i == curPromptIdx){
-      str += `<div class="progressIndicator current">${labels[i-1]}</div>`
-    } else {
-      str += `<div class="progressIndicator notyet">${labels[i-1]}</div>`
-    }
-    $('#progressIndicator').append(str)
-  }
+
 }
 const addButtons = function () {
   $('#myContainer').empty()
