@@ -9,8 +9,29 @@ let prompts = []
 let curPromptIdx = 0
 let officialName = ''
 let category = ''
-let labels = ['중요도', '관련도','인지도','선호도','이행도', '관련 사업']
+let labels = ['중요도', '관련도','인지도','선호도','이행도']
 let chart = {}
+let scores = []
+
+const showCharts = function (datasets){
+  let ctx = document.getElementById('myChart').getContext('2d')
+  chart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: datasets
+    },
+    options: {
+      scale: {
+        ticks: {
+          min: 1,
+          max: 5,
+          stepSize: 1
+        }
+      }
+    }
+  })
+}
 
 const setPrompts = async function (promptSetName, objectId) {
   prompts = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${promptSetName}/`, {
@@ -87,6 +108,7 @@ const questions = function () {
       // '<button class="buttons progressButtons" id="button' + i + '">' + i + '</button>'
       $('#myContainer').append(str)
       $('#button'+i).click( ()=> {
+        scores.push(i)
         $.post({
           headers: {
             'Authorization': 'Bearer ' + token,
@@ -118,17 +140,30 @@ const questions = function () {
     //   str += '</div>'
     //   $('#myContainer').append(str)
     // }
-    promptInstance.response_objects.forEach(function(obj){
-      str = `<button class="tagButtons" id="button${obj.id}">${obj.__str__}</button>`
-      $('#myContainer').append(str)
-      $(`#button${obj.id}`).click((ev) => {
-        budgetId = obj.id
-        object = obj
-        object.title = obj.__str__
-        console.log(object)
-        setPrompts('chrome-extension-budget', budgetId)
+    $('#myContainer').empty()
+    $('#myContainer').append('<div class="questionContent">공약 평가 완료! 다른 사람들의 의견을 확인해보세요.</div>')
+    $('#myContainer').append('<canvas id="myChart" width="100%" height="100%"></canvas>')
+    $('#myContainer').append('<button id="showBudgets" class="promiseTitleButton">관련 사업 보기</button>')
+    $('#showBudgets').click(function () {
+      $('#myContainer').empty().append(str)
+      promptInstance.response_objects.forEach(function(obj){
+        str = `<button class="tagButtons" id="button${obj.id}">${obj.__str__}</button>`
+        $('#myContainer').append(str)
+        $(`#button${obj.id}`).click((ev) => {
+          budgetId = obj.id
+          object = obj
+          object.title = obj.__str__
+          console.log(object)
+          setPrompts('chrome-extension-budget', budgetId)
+        })
       })
     })
+
+    showCharts([{
+      data: scores,
+      label: '점수'
+    }])
+    
     // str = '<button class="progressButtons">다음</button>'
     // $('#myContainer').append(str)
     // $('.progressButtons').click((ev) => {
@@ -202,6 +237,9 @@ const questions = function () {
   }
   $('#myContainer').append(`<div id="progressIndicator"></div>`)
   for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
+    if(!labels[i-1]){
+      break
+    }
     str = ''
     if (i < curPromptIdx){
       str += `<div class="progressIndicator done">${labels[i-1]}</div>`
