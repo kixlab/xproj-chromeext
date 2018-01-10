@@ -102,7 +102,7 @@ const questions = function () {
   $('#myContainer').append(str)
   console.log(promptInstance)
   if(promptInstance.prompt.type === 'likert') {
-    $('#myContainer').append('<div class="likertLabels">매우<br>아니다</div>')
+    $('#myContainer').append('<div class="likertLabels">매우 아니다</div>')
     for(let i = promptInstance.prompt.scale_min; i <= promptInstance.prompt.scale_max; i++){
       str = `<button class="progressButtons" id="button${i}">${i}</button>`
       // '<button class="buttons progressButtons" id="button' + i + '">' + i + '</button>'
@@ -131,7 +131,7 @@ const questions = function () {
         })
       })
     }
-    $('#myContainer').append('<div class="likertLabels">매우<br>그렇다</div>')
+    $('#myContainer').append('<div class="likertLabels">매우 그렇다</div>')
     $('#myContainer').append(`<div id="progressIndicator"></div>`)
     for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
       if(!labels[i-1]){
@@ -173,21 +173,21 @@ const questions = function () {
           setPrompts('chrome-extension-budget', budgetId)
         })
       })
-      $('#myContainer').append(`<div id="progressIndicator"></div>`)
-      for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
-        if(!labels[i-1]){
-          break
-        }
-        str = ''
-        if (i < curPromptIdx){
-          str += `<div class="progressIndicator done">${labels[i-1]}</div>`
-        } else if (i == curPromptIdx){
-          str += `<div class="progressIndicator current">${labels[i-1]}</div>`
-        } else {
-          str += `<div class="progressIndicator notyet">${labels[i-1]}</div>`
-        }
-        $('#progressIndicator').append(str)
-      }
+      // $('#myContainer').append(`<div id="progressIndicator"></div>`)
+      // for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
+      //   if(!labels[i-1]){
+      //     break
+      //   }
+      //   str = ''
+      //   if (i < curPromptIdx){
+      //     str += `<div class="progressIndicator done">${labels[i-1]}</div>`
+      //   } else if (i == curPromptIdx){
+      //     str += `<div class="progressIndicator current">${labels[i-1]}</div>`
+      //   } else {
+      //     str += `<div class="progressIndicator notyet">${labels[i-1]}</div>`
+      //   }
+      //   $('#progressIndicator').append(str)
+      // }
     })
 
     showCharts([{
@@ -303,7 +303,8 @@ const initializePromiseList = function () {
   }
   const newsURL = window.location.href
   console.log(newsURL)
-  const myContainer = '<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>'
+  const myContainer = '<div class="promiseBook">PromiseBook<button id="collapseButton">+</button></div><div id="myContainer"><img id="loader"></div>'
+
   if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
     // $('.da').empty()
     // $('.da').append(myContainer)
@@ -326,22 +327,13 @@ const initializePromiseList = function () {
     $(myContainer).insertAfter($('.article-text'))
   }
   $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+  $('#collapseButton').click(function () {
+    let txt = $('#collapseButton').text()
+    $('#collapseButton').text(txt === '+' ? '-' : '+')
+    $('#myContainer').toggle()
+  })
   $.get(url, {url: newsURL}, onSuccess)
-<<<<<<< HEAD
   
-=======
-  // let ctx = document.getElementById('myChart').getContext('2d')
-  // chart = new Chart(ctx, {
-  //   type: 'radar',
-  //   label: '점수',
-  //   data: {
-  //     labels: labels,
-  //     datasets: [{
-  //         data: [1, 2, 3, 4, 5, 4]
-  //     }]
-  //   }
-  // })
->>>>>>> master
 }
 
 initializePromiseList()
