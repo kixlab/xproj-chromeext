@@ -85,8 +85,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 
     if(request.action == 'getToken') {
+        auth.authorize()
         let token = auth.getAccessToken()
-        console.log(token)
+        // console.log(token)
         sendResponse({token: token})
     }
 

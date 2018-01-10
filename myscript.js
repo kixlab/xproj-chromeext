@@ -219,10 +219,10 @@ const addButtons = function () {
   object = promises[Math.floor(Math.random() * promises.length)]
   // console.log(promises)
   promiseId = object.object_id
-  let str = '<button class="promiseTitleButton">' + object.title + '</button>'
+  let str = `<div class="promiseTitle"><h3>${object.title}</h3></button>`
   $('#myContainer').append(str)
-  $('#myContainer').append('<div class="prompt">이 공약에 대한 의견을 남겨주세요.</div>')
-  $('#myContainer').append('<a id="noneBtn">다른 공약 보기</a>')
+  $('#myContainer').append('<div class="prompt">20대 남성 대학원생과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
+  $('#myContainer').append('<button class="promiseTitleButton">이 공약 평가하기</button>')
   $('#noneBtn').click(function (ev) {
     $('#myContainer').empty()
     addButtons()
@@ -248,28 +248,37 @@ const initializePromiseList = function () {
   }
   const newsURL = window.location.href
   console.log(newsURL)
+  const myContainer = '<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>'
   if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
     $('.da').empty()
-    $('.da').append('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div><canvas id="myChart" width="70%" height="70%"></canvas>')
-    $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-    $.get(url, {url: newsURL}, onSuccess)
-    let ctx = document.getElementById('myChart').getContext('2d')
-    chart = new Chart(ctx, {
-      type: 'radar',
-      label: '점수',
-      data: {
-        labels: labels,
-        datasets: [{
-            data: [1, 2, 3, 4, 5, 4]
-        }]
-      }
-    })
+    $('.da').append(myContainer)
   } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
-    $('.hcg_media_pc_mAside').prepend('<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div><canvas id="myChart" width="70%" height="70%"></canvas>')
+    $('.hcg_media_pc_mAside').prepend(myContainer)
     $('.daum_ddn_area').remove()
-    $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-    $.get(url, {url: newsURL}, onSuccess)
+    // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+    // $.get(url, {url: newsURL}, onSuccess)
+  } else if (newsURL.startsWith('http://news.chosun.com/site/data')) {
+    console.log('asdf')
+    $('.news_aside').prepend(myContainer)
+    $('.art_ad_aside').remove()
+    // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+    // $.get(url, {url: newsURL}, onSuccess)
+  } else if(newsURL.startsWith('http://www.hani.co.kr')) {
+    $('#ad_kisa_r01').empty().append(myContainer)
   }
+  $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+  $.get(url, {url: newsURL}, onSuccess)
+  // let ctx = document.getElementById('myChart').getContext('2d')
+  // chart = new Chart(ctx, {
+  //   type: 'radar',
+  //   label: '점수',
+  //   data: {
+  //     labels: labels,
+  //     datasets: [{
+  //         data: [1, 2, 3, 4, 5, 4]
+  //     }]
+  //   }
+  // })
 }
 
 initializePromiseList()

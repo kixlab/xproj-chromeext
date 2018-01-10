@@ -28,7 +28,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://news.naver.com/main/*", "http://v.media.daum.net/v/*"],
+      "matches": ["http://*/*"],
       "js":["jquery-3.2.1.js", "Chart.min.js", "myscript.js"],
       "css": ["mystyle.css"]
     },
