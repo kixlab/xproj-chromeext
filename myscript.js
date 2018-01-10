@@ -219,10 +219,10 @@ const addButtons = function () {
   object = promises[Math.floor(Math.random() * promises.length)]
   // console.log(promises)
   promiseId = object.object_id
-  let str = '<button class="promiseTitleButton">' + object.title + '</button>'
+  let str = `<div class="promiseTitle"><h3>${object.title}</h3></button>`
   $('#myContainer').append(str)
-  $('#myContainer').append('<div class="prompt">이 공약에 대한 의견을 남겨주세요.</div>')
-  $('#myContainer').append('<a id="noneBtn">다른 공약 보기</a>')
+  $('#myContainer').append('<div class="prompt">20대 남성 대학원생과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
+  $('#myContainer').append('<button class="promiseTitleButton">이 공약 평가하기</button>')
   $('#noneBtn').click(function (ev) {
     $('#myContainer').empty()
     addButtons()

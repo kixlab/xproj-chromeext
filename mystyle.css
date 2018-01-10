@@ -36,49 +36,6 @@
   word-break: break-all;
 }
 
-/* .yesButton {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 7px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-
-}
-
-.dontknow {
-  background-color: #999999;
-  border: none;
-  color: white;
-  padding: 7px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-
-}
-
-.submitButton {
-  background-color: #4CAF50; 
-  border: none;
-  color: white;
-  padding: 3px 8px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-
-}
-
-.noButton {
-  background-color: #f44336; 
-  border: none;
-  color: white;
-  padding: 7px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-} */
-
 #finButton {
   background-color: #2185d0; 
   border: none;
@@ -129,7 +86,11 @@
 } */
 
 .promiseTitle {
-  margin-bottom: 0.6em;
+  margin-top: 0.6em;
+  margin-bottom: 1.2em;
+  border: 1px solid #DBDBDB;
+  padding: 0.3em 0.8em;
+  box-shadow: 0.3em 0.5em rgba(109, 117, 111, 0.2);
 }
 
 .questionContent {
@@ -138,6 +99,8 @@
 
 .promiseTitle h3 {
   color: #02547d;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .promiseBook {
@@ -185,6 +148,7 @@
   display: inline-block;
   height: 1.6em;
   margin: 0.2em;
+  margin-top: 0.6em;
   padding: 0.2em;
   /* width:  */
   font-size: 0.8em;
