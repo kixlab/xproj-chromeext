@@ -10,7 +10,6 @@ let curPromptIdx = 0
 let officialName = ''
 let category = ''
 let labels = ['중요도', '관련도','인지도','선호도','이행도', '관련 사업']
-let chart = {}
 
 const setPrompts = async function (promptSetName, objectId) {
   prompts = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${promptSetName}/`, {
@@ -265,7 +264,7 @@ const initializePromiseList = function () {
     // $('.art_ad_aside').remove()
     // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     // $.get(url, {url: newsURL}, onSuccess)
-    $(myContainer).insertAfter($('.par'))
+    $(myContainer).insertAfter($('#news_body_id'))
   } else if(newsURL.startsWith('http://www.hani.co.kr')) {
     // $('#ad_kisa_r01').empty().append(myContainer)
     $(myContainer).insertAfter($('.article-text'))
