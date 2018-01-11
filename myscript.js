@@ -301,39 +301,27 @@ const initializePromiseList = function () {
     officialName = '박원순 서울시장'
     addButtons()
   }
-  const newsURL = window.location.href
-  console.log(newsURL)
+  const newsLocation = window.location
+
   const myContainer = '<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>'
-  if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
+  if(newsLocation.hostname === "news.naver.com"){
     $('.da').empty()
     $('.da').append(myContainer)
-  } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
+  } else if (newsLocation.hostname === "v.media.daum.net"){
     $('.hcg_media_pc_mAside').prepend(myContainer)
     $('.daum_ddn_area').remove()
-    // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-    // $.get(url, {url: newsURL}, onSuccess)
-  } else if (newsURL.startsWith('http://news.chosun.com/site/data')) {
-    console.log('asdf')
+  } else if (newsLocation.hostname === "news.chosun.com") {
     $('.news_aside').prepend(myContainer)
     $('.art_ad_aside').remove()
-    // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-    // $.get(url, {url: newsURL}, onSuccess)
-  } else if(newsURL.startsWith('http://www.hani.co.kr')) {
+  } else if(newsLocation.hostname === "www.hani.co.kr") {
     $('#ad_kisa_r01').empty().append(myContainer)
-  }
+  } else if(newsLocation.hostname === "news.donga.com") {
+    //TODO
+  } 
+  // TODO
   $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-  $.get(url, {url: newsURL}, onSuccess)
-  // let ctx = document.getElementById('myChart').getContext('2d')
-  // chart = new Chart(ctx, {
-  //   type: 'radar',
-  //   label: '점수',
-  //   data: {
-  //     labels: labels,
-  //     datasets: [{
-  //         data: [1, 2, 3, 4, 5, 4]
-  //     }]
-  //   }
-  // })
+  $.get(url, {url: newsLocation.href}, onSuccess)
+
 }
 
 initializePromiseList()
