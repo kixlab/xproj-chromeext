@@ -109,8 +109,9 @@
   background-color: #02547d;
   color: white;
   border-color: grey;
-  padding: 3px 8px;
+  padding: 0.3em 0.8em;
   width: auto;
+  max-height: 2em;
   font-family: 'NanumGothic';
   font-size: 1.2em;
   font-weight: bold;
@@ -120,7 +121,7 @@
   float: right;
   background-color: rgba(0, 0, 0, 0);
   color: white;
-  display: inline-block;
+  /* display: inline-block; */
   font-size: 1.2em;
 }
 

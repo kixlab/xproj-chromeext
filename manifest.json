@@ -29,7 +29,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js":["jquery-3.2.1.js", "Chart.min.js", "myscript.js"],
+      "js":["newsSites.js", "jquery-3.2.1.js", "Chart.min.js", "myscript.js"],
       "css": ["mystyle.css"]
     },
     {

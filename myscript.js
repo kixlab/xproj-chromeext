@@ -303,36 +303,41 @@ const initializePromiseList = function () {
   }
   const newsURL = window.location.href
   console.log(newsURL)
-  const myContainer = '<div class="promiseBook">PromiseBook<button id="collapseButton">+</button></div><div id="myContainer"><img id="loader"></div>'
-
-  if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
-    // $('.da').empty()
-    // $('.da').append(myContainer)
-    $(myContainer).insertAfter($('#articleBodyContents'))
-  } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
-    // $('.hcg_media_pc_mAside').prepend(myContainer)
-    // $('.daum_ddn_area').remove()
-    // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-    // $.get(url, {url: newsURL}, onSuccess)
-    $(myContainer).insertAfter($('.article_view'))
-  } else if (newsURL.startsWith('http://news.chosun.com/site/data')) {
-    console.log('asdf')
-    // $('.news_aside').prepend(myContainer)
-    // $('.art_ad_aside').remove()
-    // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-    // $.get(url, {url: newsURL}, onSuccess)
-    $(myContainer).insertAfter($('#news_body_id'))
-  } else if(newsURL.startsWith('http://www.hani.co.kr')) {
-    // $('#ad_kisa_r01').empty().append(myContainer)
-    $(myContainer).insertAfter($('.article-text'))
+  const myContainer = '<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>'
+  // <button id="collapseButton">+</button>
+  const selector = newsSites[window.location.hostname]
+  if (selector) {
+    $(myContainer).insertAfter($(selector))
+    $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+    $('#collapseButton').click(function () {
+      let txt = $('#collapseButton').text()
+      $('#collapseButton').text(txt === '+' ? '-' : '+')
+      $('#myContainer').toggle()
+    })
+    $.get(url, {url: newsURL}, onSuccess)
   }
-  $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-  $('#collapseButton').click(function () {
-    let txt = $('#collapseButton').text()
-    $('#collapseButton').text(txt === '+' ? '-' : '+')
-    $('#myContainer').toggle()
-  })
-  $.get(url, {url: newsURL}, onSuccess)
+  // if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
+  //   // $('.da').empty()
+  //   // $('.da').append(myContainer)
+  //   $(myContainer).insertAfter($('#articleBodyContents'))
+  // } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
+  //   // $('.hcg_media_pc_mAside').prepend(myContainer)
+  //   // $('.daum_ddn_area').remove()
+  //   // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+  //   // $.get(url, {url: newsURL}, onSuccess)
+  //   $(myContainer).insertAfter($('.article_view'))
+  // } else if (newsURL.startsWith('http://news.chosun.com/site/data')) {
+  //   console.log('asdf')
+  //   // $('.news_aside').prepend(myContainer)
+  //   // $('.art_ad_aside').remove()
+  //   // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
+  //   // $.get(url, {url: newsURL}, onSuccess)
+  //   $(myContainer).insertAfter($('#news_body_id'))
+  // } else if(newsURL.startsWith('http://www.hani.co.kr')) {
+  //   // $('#ad_kisa_r01').empty().append(myContainer)
+  //   $(myContainer).insertAfter($('.article-text'))
+  // }
+  
   
 }
 
