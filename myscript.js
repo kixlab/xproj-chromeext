@@ -300,24 +300,29 @@ const questions = function () {
 }
 const addButtons = function () {
   $('#myContainer').empty()
-  $('#myContainer').append(`<div class="prompt">이 기사와 관련있는 ${officialName}의 공약입니다.</div>`)  
-  object = promises[Math.floor(Math.random() * promises.length)]
-  console.log(promises)
-  promiseId = object.object_id
-  let str = `<div class="promiseTitle"><h3>${object.title}</h3></button>`
-  $('#myContainer').append(str)
-  $('#myContainer').append('<div class="prompt">20대 남성 대학원생과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
-  $('#myContainer').append('<button id="evalBtn" class="promiseTitleButton">이 공약 평가하기</button> ')
-  $('#myContainer').append('<button id="noneBtn" class="promiseTitleButton">다른 공약 보기</button>')
-  $('#noneBtn').click(function (ev) {
-    ev.preventDefault()
-    $('#myContainer').empty()
-    addButtons()
-  })
-  $('#evalBtn').click(function(ev) {
-    ev.preventDefault()
-    setPrompts('chrome-extension-promise', promiseId)
-  })
+  if(promises.length) {
+    $('#myContainer').append(`<div class="prompt">이 기사와 관련있는 ${officialName}의 공약입니다.</div>`) 
+    object = promises[Math.floor(Math.random() * promises.length)]
+    console.log(promises)
+    promiseId = object.object_id
+    let str = `<div class="promiseTitle"><h3>${object.title}</h3></button>`
+    $('#myContainer').append(str)
+    $('#myContainer').append('<div class="prompt">20대 남성 대학원생과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
+    $('#myContainer').append('<button id="evalBtn" class="promiseTitleButton">이 공약 평가하기</button> ')
+    $('#myContainer').append('<button id="noneBtn" class="promiseTitleButton">다른 공약 보기</button>')
+    $('#noneBtn').click(function (ev) {
+      ev.preventDefault()
+      $('#myContainer').empty()
+      addButtons()
+    })
+    $('#evalBtn').click(function(ev) {
+      ev.preventDefault()
+      setPrompts('chrome-extension-promise', promiseId)
+    })
+  } else {
+    $('#myContainer').append(`<div class="prompt">기사와 관련있는 ${officialName}의 공약이 없습니다. 다른 기사에서 뵈요!</div>`)
+  }
+  
 }
 const initializePromiseList = function () {
   chrome.runtime.sendMessage({action: 'getToken'}, (response) => {
@@ -344,8 +349,13 @@ const initializePromiseList = function () {
   }
   const newsURL = window.location.href
   console.log(newsURL)
-  const myContainer = '<div class="promiseBook">PromiseBook</div><div id="myContainer"><img id="loader"></div>'
-  // <button id="collapseButton">+</button>
+  const myContainer = `<div class="promiseBook">
+  <div class="promiseBookTitle">PromiseBook
+  <button class="titleButtons" id="collapseButton">+</button>
+  <a href="https://goo.gl/forms/IFYwyUK68NiEWEsj2" target="_blank" id="commentsButton">Comments?</a>
+  </div>
+  <div id="myContainer"><img id="loader"></div>
+  </div>`
   const selector = newsSites[window.location.hostname]
   if (selector) {
     $(myContainer).insertAfter($(selector))
@@ -355,6 +365,7 @@ const initializePromiseList = function () {
       $('#collapseButton').text(txt === '+' ? '-' : '+')
       $('#myContainer').toggle()
     })
+    
     $.get(url, {url: newsURL}, onSuccess)
   }
   // if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
