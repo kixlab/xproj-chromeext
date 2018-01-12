@@ -45,7 +45,9 @@
   text-decoration: none;
   display: inline-block;
 }
-
+.keywords {
+  font-weight: bold;
+}
 .progressButtons {
   background-color: #0284A8;
   border: none;
@@ -155,11 +157,11 @@
 
 #myContainer .progressIndicator {
   display: inline-block;
-  height: 1.6em;
+  height: 0.3em;
   margin: 0.2em;
   margin-top: 0.6em;
   padding: 0.2em;
-  /* width:  */
+  width: 2em;
   font-size: 0.8em;
 }
 

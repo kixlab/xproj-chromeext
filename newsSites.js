@@ -28,5 +28,6 @@ const newsSites = {
   'news.kmib.co.kr': '#articleBody',
   'news.ebs.co.kr': '#contents',
   'www.hani.co.kr': '.article-text-font-size',
-  'news.jtbc.joins.com': '#articlebody'
+  'news.jtbc.joins.com': '#articlebody',
+  'www.ohmynews.com': '.at_contents'
 }
