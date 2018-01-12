@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "KIXLAB News Reader",
-  "description": "just another toy project",
+  "description": "End-of-article version",
   "version": "1.0",
   "browser_action": {
     "default_title": "News Reader",
@@ -29,7 +29,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*"],
-      "js":["jquery-3.2.1.js", "Chart.min.js", "myscript.js"],
+      "js":["newsSites.js", "jquery-3.2.1.js", "Chart.min.js", "myscript.js"],
       "css": ["mystyle.css"]
     },
     {
