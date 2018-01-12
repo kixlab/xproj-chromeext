@@ -13,6 +13,7 @@
   width: auto;
   border: 1px solid #DBDBDB;
   font-family: 'NanumGothic';
+  height: 18em;
 }
 #myContainer a { 
   color: #02547d; 
@@ -100,6 +101,12 @@
   margin-bottom: 0.6em;
 }
 
+#myChartDiv {
+  position: relative; 
+  height:12em; 
+  width:12em;
+}
+
 .promiseTitle h3 {
   color: #02547d;
   font-size: 1.2em;
@@ -107,7 +114,7 @@
 }
 
 .promiseBook {
-  text-align: center;
+  text-align: left;
   background-color: #02547d;
   color: white;
   border-color: grey;

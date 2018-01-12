@@ -20,18 +20,20 @@ const showCharts = function (labels, datasets){
   }
   let ctx = document.getElementById('myChart').getContext('2d')
   chart = new Chart(ctx, {
-    type: 'radar',
+    type: 'bar',
     data: {
       labels: labels,
       datasets: datasets
     },
     options: {
-      scale: {
-        ticks: {
-          min: 0,
-          max: 5,
-          stepSize: 1
-        }
+      scales: {
+        yAxes: [{
+          ticks: {
+            min: 0,
+            max: 5,
+            stepSize: 1
+          }
+        }]
       }
     }
   })
@@ -110,7 +112,7 @@ const promptEnd = async function () {
     })
     $('#myContainer').empty()
     $('#myContainer').append('<div class="questionContent">공약 평가 완료! 다른 사람들의 의견을 확인해보세요.</div>')
-    $('#myContainer').append('<canvas id="myChart" width="100%" height="100%"></canvas>')
+    $('#myContainer').append('<div id="myChartDiv"><canvas id="myChart" width="100%" height="100%"></canvas></div>')
     $('#myContainer').append('<button id="showBudgets" class="promiseTitleButton">관련 사업 보기</button>')
     $('#showBudgets').click(function (ev) {
       ev.preventDefault()
@@ -123,12 +125,16 @@ const promptEnd = async function () {
     let datas = stats.series.slice(1).map(d => {
       return {
         label: d.label, 
-        data: d.prompt_data.map(r => r.mean_rating)
+        data: d.prompt_data.map(r => r.mean_rating),
+        backgroundColor: 'rgba(243, 188, 200, 0.3)',
+        borderColor: '#F2526E'
       }
     })
     datas.push({
       label: '내 점수',
-      data: scores
+      data: scores,
+      borderColor: '#6DDDF2',
+      backgroundColor: 'rgba(193, 240, 244, 0.3)'
     })
     $('#myContainer').empty()
     let str = `<div class="questionContent">사업 평가 완료! 다른 사람들의 의견을 확인해보세요.</div><canvas id="myChart" width="100%" height="100%"></canvas>다른 공약에 대한 의견도 남겨주세요!<br><button class="progressButtons" id="endButton">다른 공약 보기</button>`
