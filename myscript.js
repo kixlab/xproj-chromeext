@@ -100,7 +100,7 @@ const promptEnd = async function () {
         label: d.label,
         data: d.prompt_data.map(r => r.mean_rating),
         borderColor: '#F2526E',
-        backgroundColor: 'rgba(243, 188, 200, 0.3)'
+        backgroundColor: 'rgba(243, 188, 200, 0.7)'
       }
     })
     console.log(data)
@@ -108,7 +108,7 @@ const promptEnd = async function () {
       label: '내 점수',
       data: scores,
       borderColor: '#6DDDF2',
-      backgroundColor: 'rgba(193, 240, 244, 0.3)'
+      backgroundColor: 'rgba(193, 240, 244, 0.7)'
     })
     $('#myContainer').empty()
     $('#myContainer').append('<div class="questionContent">공약 평가 완료! 다른 사람들의 의견을 확인해보세요.</div>')
@@ -127,7 +127,7 @@ const promptEnd = async function () {
       return {
         label: d.label,
         data: d.prompt_data.map(r => r.mean_rating),
-        backgroundColor: 'rgba(243, 188, 200, 0.3)',
+        backgroundColor: 'rgba(243, 188, 200, 0.7)',
         borderColor: '#F2526E'
       }
     })
@@ -136,7 +136,7 @@ const promptEnd = async function () {
       label: '내 점수',
       data: scores,
       borderColor: '#6DDDF2',
-      backgroundColor: 'rgba(193, 240, 244, 0.3)'
+      backgroundColor: 'rgba(193, 240, 244, 0.7)'
     })
     $('#myContainer').empty()
     let str = `<div class="questionContent">사업 평가 완료! 다른 사람들의 의견을 확인해보세요.</div><div id="myChartDiv"><canvas id="myChart"></canvas></div>다른 공약에 대한 의견도 남겨주세요!<br><button type="button" class="progressButtons" id="endButton">다른 공약 보기</button>`
@@ -289,12 +289,13 @@ const questions = function () {
     })
   }
   $('#myContainer').append(`<div id="progressIndicator"></div>`)
-  let len = curPromptSet === 'chrome-extension-budget' ? prompts.ordered_prompts.length - 1 : prompts.ordered_prompts.length
+  let len = curPromptSet === 'chrome-extension-budget' ? prompts.ordered_prompts.length - 1 : prompts.ordered_prompts.length // 1st question of budget is should not be counted
+  let curIdx = curPromptSet === 'chrome-extension-budget' ? curPromptIdx - 1 : curPromptIdx // should not code like this though
   for (let i = 1; i <= len; i++) {
     str = ''
-    if (i < curPromptIdx){
+    if (i < curIdx){
       str += `<span class="progressIndicator done">●</span>`
-    } else if (i == curPromptIdx){
+    } else if (i == curIdx){
       str += `<span class="progressIndicator current">●</span>`
     } else {
       str += `<span class="progressIndicator notyet">●</span>`
@@ -369,7 +370,14 @@ const initializePromiseList = function () {
   </div>`
   const selector = newsSites[window.location.hostname]
   if (selector) {
+    let marginLeft = parseInt($(selector).css('marginLeft').split('px')[0])
+    console.log(marginLeft)
+    let paddingLeft = parseInt($(selector).css('paddingLeft').split('px')[0])
+    let margin = (marginLeft > paddingLeft ? marginLeft : paddingLeft) + 1
+    console.log(paddingLeft)
     $(myContainer).insertBefore($(selector))
+    $('.promiseBook').css('marginLeft', margin+'px')
+    // $('.promiseBook').css('paddingLeft', paddingLeft)
     $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     $('#collapseButton').click(function () {
       $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">PromiseBook</a>')

@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "KIXLAB News Reader",
-  "description": "End-of-article version",
+  "description": "Question pane shown before the article",
   "version": "1.0",
   "browser_action": {
     "default_title": "News Reader",

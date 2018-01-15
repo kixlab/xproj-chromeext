@@ -3,7 +3,10 @@ button {
 }
 
 .promiseBook {
+  margin-bottom: 1em;
+  margin-top: 1em;
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+  clear: both;
 }
 
 .promiseBook button {
@@ -23,7 +26,6 @@ button {
   font-family: 'NanumGothic';
   /* height: 18em; */
   display: none;
-  margin-bottom: 1em;
   margin-top: -1em;
 }
 #myContainer a {
@@ -139,7 +141,7 @@ button {
 .promiseBookTitle {
   text-align: left;
   background-color: #ffffff;
-  color: #9500FF;
+  color: #9500FF !important;
   padding: 0.3em 0.8em;
   width: auto;
   max-height: 2em;
@@ -153,8 +155,13 @@ button {
 }
 
 .promiseBookTitle a {
-  color: #9500FF;
+  color: #9500FF !important;
   cursor: pointer;
+}
+
+#appName {
+  color: #9500FF !important;
+
 }
 
 .promiseBookTitle #collapseButton {
@@ -226,13 +233,17 @@ button {
 
 #myContainer .progressIndicator {
   display: inline-block;
-  height: 0.3em;
+  /* height: 0.3em; */
   /* margin: 0.2em; */
   margin-top: 0.6em;
   padding: 0.2em;
   width: 2em;
   font-size: 0.8em;
 }
+
+/* #progressIndicator {
+  margin-bottom: 1em;
+} */
 
 #myContainer .progressIndicator.done {
   color: rgba(149, 0, 255, 0.5);
