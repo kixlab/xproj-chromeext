@@ -97,7 +97,7 @@ const promptEnd = async function () {
     let labels = stats.ordered_prompts.map(p => p.label)
     let data = stats.series.map(d => {
       return {
-        label: d.label, 
+        label: d.label,
         data: d.prompt_data.map(r => r.mean_rating),
         borderColor: '#F2526E',
         backgroundColor: 'rgba(243, 188, 200, 0.3)'
@@ -117,7 +117,7 @@ const promptEnd = async function () {
     $('#showBudgets').click(function (ev) {
       // ev.preventDefault()
       setPrompts('chrome-extension-budget')
-      
+
     })
     showCharts(labels, data)
   } else if (curPromptSet === 'chrome-extension-budget') {
@@ -125,7 +125,7 @@ const promptEnd = async function () {
     let labels = stats.ordered_prompts.slice(1).map(p => p.label)
     let data = stats.series.slice(1).map(d => {
       return {
-        label: d.label, 
+        label: d.label,
         data: d.prompt_data.map(r => r.mean_rating),
         backgroundColor: 'rgba(243, 188, 200, 0.3)',
         borderColor: '#F2526E'
@@ -152,7 +152,7 @@ const promptEnd = async function () {
 const questions = function () {
   curPromptIdx += 1
   $('#myContainer').empty()
-  let str = '<div class="promiseTitle"><h3>' + object.title + '</h3></div>' 
+  let str = '<div class="promiseTitle"><h3>' + object.title + '</h3></div>'
   str += '<div class="questionContent">' + promptInstance.display_text + '</div>'
   $('#myContainer').append(str)
   console.log(promptInstance)
@@ -164,6 +164,7 @@ const questions = function () {
       $('#myContainer').append(str)
       $('#button'+i).click( async (ev)=> {
         // ev.preventDefault()
+        $(ev.target).animate({ opacity: 0 });
         scores.push(i)
         await $.post({
           headers: {
@@ -304,15 +305,15 @@ const questions = function () {
 const addButtons = function () {
   $('#myContainer').empty()
   if(promises.length) {
-    $('#myContainer').append(`<div class="prompt">이 기사와 관련있는 ${officialName}의 공약입니다.</div>`) 
+    $('#myContainer').append(`<div class="prompt">이 기사와 관련있는 ${officialName}의 공약입니다.</div>`)
     object = promises[Math.floor(Math.random() * promises.length)]
     console.log(promises)
     promiseId = object.object_id
     let str = `<div class="promiseTitle"><h3>${object.title}</h3></button>`
     $('#myContainer').append(str)
-    $('#myContainer').append('<div class="prompt">20대 남성 대학원생과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
-    $('#myContainer').append('<button type="button" id="evalBtn" class="promiseTitleButton">이 공약 평가하기</button> ')
+    $('#myContainer').append('<div class="prompt"><span class="emphasis-text">20대 남성 대학원생</span>과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
     $('#myContainer').append('<button type="button" id="noneBtn" class="promiseTitleButton">다른 공약 보기</button>')
+    $('#myContainer').append('<button type="button" id="evalBtn" class="promiseTitleButton">이 공약 평가하기</button>')
     $('#noneBtn').click(function (ev) {
       console.log(ev)
       // ev.preventDefault()
@@ -326,7 +327,7 @@ const addButtons = function () {
   } else {
     $('#myContainer').append(`<div class="prompt">기사와 관련있는 ${officialName}의 공약이 없습니다. 다른 기사에서 뵈요!</div>`)
   }
-  
+
 }
 const initializePromiseList = function () {
   chrome.runtime.sendMessage({action: 'getToken'}, (response) => {
@@ -353,15 +354,15 @@ const initializePromiseList = function () {
   }
   const newsURL = window.location.href
   console.log(newsURL)
-  const myContainer = 
+  const myContainer =
   `<div class="promiseBook">
     <div class="promiseBookTitle">
       <div id="appName">
         이 기사에 대해 박원순 시장이 4년 전에 뭐라고 했을까요?
       </div>
       <div class="promiseBookTitleButtons">
-        <button type="button" class="titleButtons" id="collapseButton">+</button>
         <a href="https://goo.gl/forms/IFYwyUK68NiEWEsj2" target="_blank" id="commentsButton">Comments?</a>
+        <button type="button" class="titleButtons" id="collapseButton">+</button>
       </div>
     </div>
     <div id="myContainer"><img id="loader"></div>
@@ -376,7 +377,7 @@ const initializePromiseList = function () {
       $('#collapseButton').text(txt === '+' ? '-' : '+')
       $('#myContainer').toggle()
     })
-    
+
     $.get(url, {url: newsURL}, onSuccess)
   }  
 }
