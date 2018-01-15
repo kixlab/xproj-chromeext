@@ -1,3 +1,7 @@
+button {
+    cursor: pointer;
+}
+
 .promiseBook {
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
 }
@@ -14,31 +18,30 @@
 #myContainer {
   background-color: #ffffff;
   text-align: center;
-  padding: 0.3em 0.7em;
+  padding: 0.3em 0.7em 0.7em 0.7em;
   width: auto;
-  border: 1px solid #DBDBDB;
   font-family: 'NanumGothic';
   /* height: 18em; */
   display: none;
   margin-bottom: 1em;
   margin-top: -1em;
 }
-#myContainer a { 
-  color: #02547d; 
+#myContainer a {
+  color: #02547d;
   text-decoration: none;
   white-space: normal;
   word-wrap: break-word;
   word-break: break-all;
 }
-#myContainer a:visited { 
-  color: #02547d; 
+#myContainer a:visited {
+  color: #02547d;
   text-decoration: none;
   white-space: normal;
   word-wrap: break-word;
   word-break: break-all;
 }
-#myContainer a:hover { 
-  color: #02547d; 
+#myContainer a:hover {
+  color: #02547d;
   text-decoration: underline;
   white-space: normal;
   word-wrap: break-word;
@@ -46,7 +49,7 @@
 }
 
 #finButton {
-  background-color: #9500FF; 
+  background-color: #9500FF;
   border: none;
   color: white;
   padding: 0.25em 0.5em;
@@ -66,7 +69,6 @@
   text-decoration: none;
   display: inline-block;
   margin: 0.1em;
-  cursor: pointer;
   font-size: 1em;
   /* box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3); */
   /* float: right; */
@@ -92,14 +94,13 @@
   text-decoration: none;
   display: block;
   margin: 0.1em;
-  cursor: pointer;
   font-size: 1em;
   height: 2em;
   /* box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3); */
   /* float: right; */
 }
 /* .dontknowProgress{
-  background-color: #999999; 
+  background-color: #999999;
   border: none;
   color: white;
   padding: 3px 8px;
@@ -114,7 +115,6 @@
   margin-bottom: 1.2em;
   border: 1px solid #DBDBDB;
   padding: 0.3em 0.8em;
-  box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
 }
 
 .questionContent {
@@ -122,10 +122,10 @@
 }
 
 #myChartDiv {
-  position: relative; 
+  position: relative;
   width: 50%;
   margin: auto;
-  /* height:12em; 
+  /* height:12em;
   width:auto; */
   /* display: inline-block; */
 }
@@ -140,7 +140,6 @@
   text-align: left;
   background-color: #ffffff;
   color: #9500FF;
-  border: 1px solid #DBDBDB;
   padding: 0.3em 0.8em;
   width: auto;
   max-height: 2em;
@@ -150,6 +149,7 @@
   margin-bottom: 1em;
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .promiseBookTitle a {
@@ -158,15 +158,15 @@
 }
 
 .promiseBookTitle #collapseButton {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: #9500FF;
   padding-left: 0.3em;
   padding-right: 0.3em;
-  color: #9500FF;
+  color: white;
   display: inline-block;
   font-size: 1em;
   vertical-align: middle;
-  font-weight: bold;
-  border: 1px solid #DBDBDB;
+  min-width: 28px;
+  line-height: unset;
   /* box-shadow: none; */
 }
 
@@ -206,13 +206,16 @@
   margin-bottom: 0.2em;
   /* margin: auto; */
   word-break: keep-all;
-  cursor: pointer;
   /* box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3); */
 }
 
 #myContainer .promiseTitleButton:hover, #myContainer .promiseTitleButton:focus, #myContainer .promiseTitleButton:active  {
   /* box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2); */
   background-color: rgba(149, 0, 255, 0.7);
+}
+
+.promiseTitleButton+.promiseTitleButton {
+    margin-left: 10px;
 }
 
 #myContainer .likertLabels {
@@ -244,7 +247,16 @@
 }
 
 #noneBtn {
-  cursor: pointer;
+  background-color: rgb(158, 158, 158)!important;
   /* box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3); */
 }
+
+#noneBtn:hover {
+  background-color: rgba(158, 158, 158, 0.7)!important;
+}
+
+.emphasis-text {
+    color: #9500FF;
+}
+
 /* color scheme from https://color.adobe.com/ko/sea-waves-color-theme-10331668/ */
