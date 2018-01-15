@@ -164,6 +164,7 @@ const questions = function () {
       $('#myContainer').append(str)
       $('#button'+i).click( async (ev)=> {
         // ev.preventDefault()
+        $(ev.target).animate({ opacity: 0 });
         scores.push(i)
         await $.post({
           headers: {
