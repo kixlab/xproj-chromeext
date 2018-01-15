@@ -95,7 +95,7 @@ const promptEnd = async function () {
   if(curPromptSet === 'chrome-extension-promise') {
     let stats = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${curPromptSet}/statistics/`, {object_ids: getObjectId('promise')})
     let labels = stats.ordered_prompts.map(p => p.label)
-    let datas = stats.series.map(d => {
+    let data = stats.series.map(d => {
       return {
         label: d.label, 
         data: d.prompt_data.map(r => r.mean_rating),
@@ -103,8 +103,8 @@ const promptEnd = async function () {
         backgroundColor: 'rgba(243, 188, 200, 0.3)'
       }
     })
-    console.log(datas)
-    datas.push({
+    console.log(data)
+    data.push({
       label: '내 점수',
       data: scores,
       borderColor: '#6DDDF2',
@@ -112,17 +112,18 @@ const promptEnd = async function () {
     })
     $('#myContainer').empty()
     $('#myContainer').append('<div class="questionContent">공약 평가 완료! 다른 사람들의 의견을 확인해보세요.</div>')
-    $('#myContainer').append('<div id="myChartDiv"><canvas id="myChart" width="100%" height="100%"></canvas></div>')
-    $('#myContainer').append('<button id="showBudgets" class="promiseTitleButton">관련 사업 보기</button>')
+    $('#myContainer').append('<div id="myChartDiv"><canvas id="myChart" ></canvas></div>')
+    $('#myContainer').append('<button type="button" id="showBudgets" class="promiseTitleButton">관련 사업 보기</button>')
     $('#showBudgets').click(function (ev) {
-      ev.preventDefault()
+      // ev.preventDefault()
       setPrompts('chrome-extension-budget')
+      
     })
-    showCharts(labels, datas)
+    showCharts(labels, data)
   } else if (curPromptSet === 'chrome-extension-budget') {
     let stats = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${curPromptSet}/statistics/`, {object_ids: getObjectId('budget')})
     let labels = stats.ordered_prompts.slice(1).map(p => p.label)
-    let datas = stats.series.slice(1).map(d => {
+    let data = stats.series.slice(1).map(d => {
       return {
         label: d.label, 
         data: d.prompt_data.map(r => r.mean_rating),
@@ -130,21 +131,22 @@ const promptEnd = async function () {
         borderColor: '#F2526E'
       }
     })
-    datas.push({
+    console.log(data)
+    data.push({
       label: '내 점수',
       data: scores,
       borderColor: '#6DDDF2',
       backgroundColor: 'rgba(193, 240, 244, 0.3)'
     })
     $('#myContainer').empty()
-    let str = `<div class="questionContent">사업 평가 완료! 다른 사람들의 의견을 확인해보세요.</div><canvas id="myChart" width="100%" height="100%"></canvas>다른 공약에 대한 의견도 남겨주세요!<br><button class="progressButtons" id="endButton">다른 공약 보기</button>`
+    let str = `<div class="questionContent">사업 평가 완료! 다른 사람들의 의견을 확인해보세요.</div><div id="myChartDiv"><canvas id="myChart"></canvas></div>다른 공약에 대한 의견도 남겨주세요!<br><button type="button" class="progressButtons" id="endButton">다른 공약 보기</button>`
     $('#myContainer').append(str)
     $('#endButton').click(function (ev) {
-      ev.preventDefault()
+      // ev.preventDefault()
       $('#myContainer').empty()
       addButtons()
     })
-    showCharts(labels, datas)
+    showCharts(labels, data)
   }
 }
 const questions = function () {
@@ -157,11 +159,11 @@ const questions = function () {
   if(promptInstance.prompt.type === 'likert') {
     $('#myContainer').append('<div class="likertLabels">매우 아니다</div>')
     for(let i = promptInstance.prompt.scale_min; i <= promptInstance.prompt.scale_max; i++){
-      str = `<button class="progressButtons" id="button${i}">${i}</button>`
+      str = `<button type="button" class="progressButtons" id="button${i}">${i}</button>`
       // '<button class="buttons progressButtons" id="button' + i + '">' + i + '</button>'
       $('#myContainer').append(str)
       $('#button'+i).click( async (ev)=> {
-        ev.preventDefault()
+        // ev.preventDefault()
         scores.push(i)
         await $.post({
           headers: {
@@ -199,10 +201,10 @@ const questions = function () {
     $('#myContainer').empty()
     $('#myContainer').append(str)
     promptInstance.response_objects.forEach(function(obj){
-      str = `<button class="tagButtons" id="button${obj.id}">${obj.__str__}</button>`
+      str = `<button type="button" class="tagButtons" id="button${obj.id}">${obj.__str__}</button>`
       $('#myContainer').append(str)
       $(`#button${obj.id}`).click((ev) => {
-        ev.preventDefault()
+        // ev.preventDefault()
         budgetId = obj.id
         object = obj
         object.title = obj.__str__
@@ -259,10 +261,10 @@ const questions = function () {
   } else if (promptInstance.prompt.type === 'openended') {
     str = '<input type="text" id="comment"></input>'
     $('#myContainer').append(str)
-    str = '<button class="progressButtons">다음</button>'
+    str = '<button type="button" class="progressButtons">다음</button>'
     $('#myContainer').append(str)
     $('.progressButtons').click((ev) => {
-      ev.preventDefault()
+      // ev.preventDefault()
       const text = $('#comment').val()
       $.post({
         headers: {
@@ -308,15 +310,16 @@ const addButtons = function () {
     let str = `<div class="promiseTitle"><h3>${object.title}</h3></button>`
     $('#myContainer').append(str)
     $('#myContainer').append('<div class="prompt">20대 남성 대학원생과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
-    $('#myContainer').append('<button id="evalBtn" class="promiseTitleButton">이 공약 평가하기</button> ')
-    $('#myContainer').append('<button id="noneBtn" class="promiseTitleButton">다른 공약 보기</button>')
+    $('#myContainer').append('<button type="button" id="evalBtn" class="promiseTitleButton">이 공약 평가하기</button> ')
+    $('#myContainer').append('<button type="button" id="noneBtn" class="promiseTitleButton">다른 공약 보기</button>')
     $('#noneBtn').click(function (ev) {
-      ev.preventDefault()
+      console.log(ev)
+      // ev.preventDefault()
       $('#myContainer').empty()
       addButtons()
     })
     $('#evalBtn').click(function(ev) {
-      ev.preventDefault()
+      // ev.preventDefault()
       setPrompts('chrome-extension-promise', promiseId)
     })
   } else {
@@ -335,10 +338,10 @@ const initializePromiseList = function () {
     const selector = newsSites[window.location.hostname]
     let txt = $(selector).html()
     console.log(txt)
-    keywords.forEach(k => {
-      txt = txt.replace(k, `<span class="keywords">${k}</span>`)
-    })
-    $(selector).html(txt)
+    // keywords.forEach(k => {
+    //   txt = txt.replace(k, `<span class="keywords">${k}</span>`)
+    // })
+    // $(selector).html(txt)
 
     console.log(data)
     promises.forEach((promise) => {
@@ -349,16 +352,20 @@ const initializePromiseList = function () {
   }
   const newsURL = window.location.href
   console.log(newsURL)
-  const myContainer = `<div class="promiseBook">
-  <div class="promiseBookTitle">PromiseBook
-  <button class="titleButtons" id="collapseButton">+</button>
-  <a href="https://goo.gl/forms/IFYwyUK68NiEWEsj2" target="_blank" id="commentsButton">Comments?</a>
-  </div>
-  <div id="myContainer"><img id="loader"></div>
+  const myContainer = 
+  `<div class="promiseBook">
+    <div class="promiseBookTitle">
+      <a href="https://api.budgetwiser.org" target="_blank">PromiseBook</a>
+      <div class="promiseBookTitleButtons">
+        <button type="button" class="titleButtons" id="collapseButton">+</button>
+        <a href="https://goo.gl/forms/IFYwyUK68NiEWEsj2" target="_blank" id="commentsButton">Comments?</a>
+      </div>
+    </div>
+    <div id="myContainer"><img id="loader"></div>
   </div>`
   const selector = newsSites[window.location.hostname]
   if (selector) {
-    $(myContainer).insertAfter($(selector))
+    $(myContainer).insertBefore($(selector))
     $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     $('#collapseButton').click(function () {
       let txt = $('#collapseButton').text()
