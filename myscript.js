@@ -358,7 +358,7 @@ const initializePromiseList = function () {
   `<div class="promiseBook">
     <div class="promiseBookTitle">
       <div id="appName">
-        이 기사에 대해 박원순 시장이 4년 전에 뭐라고 했을까요?
+        박원순 시장이 4년 전에 뭐라고 했을까요?
       </div>
       <div class="promiseBookTitleButtons">
         <a href="https://goo.gl/forms/IFYwyUK68NiEWEsj2" target="_blank" id="commentsButton">Comments?</a>
