@@ -289,7 +289,8 @@ const questions = function () {
     })
   }
   $('#myContainer').append(`<div id="progressIndicator"></div>`)
-  for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
+  let len = curPromptSet === 'chrome-extension-budget' ? prompts.ordered_prompts.length - 1 : prompts.ordered_prompts.length
+  for (let i = 1; i <= len; i++) {
     str = ''
     if (i < curPromptIdx){
       str += `<span class="progressIndicator done">●</span>`
@@ -356,7 +357,9 @@ const initializePromiseList = function () {
   const myContainer =
   `<div class="promiseBook">
     <div class="promiseBookTitle">
-      <a href="https://api.budgetwiser.org" target="_blank">PromiseBook</a>
+      <div id="appName">
+        이 기사에 대해 박원순 시장이 4년 전에 뭐라고 했을까요?
+      </div>
       <div class="promiseBookTitleButtons">
         <a href="https://goo.gl/forms/IFYwyUK68NiEWEsj2" target="_blank" id="commentsButton">Comments?</a>
         <button type="button" class="titleButtons" id="collapseButton">+</button>
@@ -369,36 +372,14 @@ const initializePromiseList = function () {
     $(myContainer).insertBefore($(selector))
     $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     $('#collapseButton').click(function () {
+      $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">PromiseBook</a>')
       let txt = $('#collapseButton').text()
       $('#collapseButton').text(txt === '+' ? '-' : '+')
       $('#myContainer').toggle()
     })
 
     $.get(url, {url: newsURL}, onSuccess)
-  }
-  // if(newsURL.startsWith('http://news.naver.com/main/read.nhn')){
-  //   // $('.da').empty()
-  //   // $('.da').append(myContainer)
-  //   $(myContainer).insertAfter($('#articleBodyContents'))
-  // } else if (newsURL.startsWith('http://v.media.daum.net/v/')){
-  //   // $('.hcg_media_pc_mAside').prepend(myContainer)
-  //   // $('.daum_ddn_area').remove()
-  //   // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-  //   // $.get(url, {url: newsURL}, onSuccess)
-  //   $(myContainer).insertAfter($('.article_view'))
-  // } else if (newsURL.startsWith('http://news.chosun.com/site/data')) {
-  //   console.log('asdf')
-  //   // $('.news_aside').prepend(myContainer)
-  //   // $('.art_ad_aside').remove()
-  //   // $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-  //   // $.get(url, {url: newsURL}, onSuccess)
-  //   $(myContainer).insertAfter($('#news_body_id'))
-  // } else if(newsURL.startsWith('http://www.hani.co.kr')) {
-  //   // $('#ad_kisa_r01').empty().append(myContainer)
-  //   $(myContainer).insertAfter($('.article-text'))
-  // }
-
-
+  }  
 }
 
 initializePromiseList()
