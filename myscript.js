@@ -291,11 +291,11 @@ const questions = function () {
   for (let i = 1; i <= prompts.ordered_prompts.length; i++) {
     str = ''
     if (i < curPromptIdx){
-      str += `<div class="progressIndicator done"></div>`
+      str += `<span class="progressIndicator done">●</span>`
     } else if (i == curPromptIdx){
-      str += `<div class="progressIndicator current"></div>`
+      str += `<span class="progressIndicator current">●</span>`
     } else {
-      str += `<div class="progressIndicator notyet"></div>`
+      str += `<span class="progressIndicator notyet">●</span>`
     }
     $('#progressIndicator').append(str)
   }
