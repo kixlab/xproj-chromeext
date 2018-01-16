@@ -417,7 +417,7 @@ const initializePromiseList = function () {
     // $('.promiseBook').css('paddingLeft', paddingLeft)
     $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     $('#collapseButton').click(function () {
-      $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">🐟News Tuna</a>')
+      $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">🐟Tuna News</a>')
       let txt = $('#collapseButton').text()
       $('#collapseButton').text(txt === '+' ? '-' : '+')
       $('#myContainer').toggle()
