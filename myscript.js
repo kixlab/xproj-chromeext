@@ -333,6 +333,7 @@ const addButtons = function () {
 const initializePromiseList = function () {
   chrome.runtime.sendMessage({action: 'getToken'}, (response) => {
     token = response.token
+    console.log('token: ' + token)
   })
   const url = 'https://api.budgetwiser.org/api/news/get_by_url/'
   const onSuccess = function (data, textStatus, jqXHR) {
@@ -380,13 +381,15 @@ const initializePromiseList = function () {
     // $('.promiseBook').css('paddingLeft', paddingLeft)
     $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
     $('#collapseButton').click(function () {
-      $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">PromiseBook</a>')
+      $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">🐟News Tuna</a>')
       let txt = $('#collapseButton').text()
       $('#collapseButton').text(txt === '+' ? '-' : '+')
       $('#myContainer').toggle()
     })
 
-    $.get(url, {url: newsURL}, onSuccess)
+    $.get(url, {url: newsURL}, onSuccess).fail(function () {
+      $('#myContainer').empty().append(`<div class="prompt">서버 오류입니다. 조금 뒤 다시 시도해주세요!</div>`)
+    })
   }  
 }
 

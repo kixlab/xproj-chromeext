@@ -85,10 +85,35 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     }
 
     if(request.action == 'getToken') {
-        auth.authorize()
+        // auth.authorize()
         let token = auth.getAccessToken()
-        // console.log(token)
-        sendResponse({token: token})
+        if(token){
+            sendResponse({token: token})
+        } else {
+            if(localStorage.getItem(token)) {
+                console.log(auth.getConfig())
+            } else {
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = function (event) {
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200) {
+                            // console.log(xhr.responseText)
+                            let data = JSON.parse(xhr.responseText)
+                            // auth.setSource(data)
+                            token = data.access_token
+                            console.log(token)
+                            localStorage.setItem('token', token)
+                            sendResponse({'token': token})
+                        }
+                    }
+                }
+                xhr.open('POST', api_host + '/oauth/auto-signup/', true)
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('Authorization', 'Bearer ' + auth.getAccessToken());
+                xhr.send();
+            }
+        }
+        
     }
 
     return true; // async response
