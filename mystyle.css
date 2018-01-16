@@ -144,7 +144,7 @@ button {
   color: #9500FF !important;
   padding: 0.3em 0.8em;
   width: auto;
-  max-height: 2em;
+  max-height: 4em;
   font-family: 'NanumGothic';
   font-size: 1.2em;
   font-weight: bold;
@@ -268,6 +268,10 @@ button {
 
 .emphasis-text {
     color: #9500FF;
+}
+
+#appName {
+  width: 80%;
 }
 
 /* color scheme from https://color.adobe.com/ko/sea-waves-color-theme-10331668/ */
