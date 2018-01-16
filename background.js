@@ -84,11 +84,59 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         });
     }
 
+    if (request.action == 'authenticate') {
+        getUser(function () {
+            updateContextMenu()
+            sendResponse({token: auth.getAccessToken()})
+        })
+    }
+
     if(request.action == 'getToken') {
-        auth.authorize()
+        // auth.authorize()
         let token = auth.getAccessToken()
-        // console.log(token)
-        sendResponse({token: token})
+        console.log('token from background.js: ' + token)
+        if(token){
+            sendResponse({token: token, isLogedIn: true})
+        } else {
+            if(localStorage.getItem('token')) {
+
+                // getUser(function() {
+                //     updateContextMenu();
+                //     token = auth.getAccessToken()
+                //     sendResponse({token: token})
+                // });
+                sendResponse({token: localStorage.getItem('token'), isLogedIn: false})
+                // let token = localStorage.getItem('token')
+                // console.log(auth.getConfig())
+                // let authURL = auth.adapter.authorizationCodeURL(auth.getConfig())
+                // console.log('authURL: '+)
+                // let consolidateURL = api_host + `/accounts/consolidate-user/?token=${token}&next=${authURL}`
+                // chrome.tabs.create({url: consolidateURL}, function(tabs) {
+                //     //
+                // })
+            } else {
+                let xhr = new XMLHttpRequest()
+                xhr.onreadystatechange = function (event) {
+                    if(xhr.readyState == 4){
+                        if(xhr.status == 200) {
+                            // console.log(xhr.responseText)
+                            let data = JSON.parse(xhr.responseText)
+                            // auth.setSource(data)
+                            // console.log(auth.getAccessToken())
+                            token = data.access_token
+                            console.log(token)
+                            localStorage.setItem('token', token)
+                            sendResponse({'token': token, isLogedIn: false})
+                        }
+                    }
+                }
+                xhr.open('POST', api_host + '/oauth/auto-signup/', true)
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('Authorization', 'Bearer ' + auth.getAccessToken());
+                xhr.send();
+            }
+        }
+        
     }
 
     return true; // async response

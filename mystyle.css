@@ -266,6 +266,13 @@ button {
   background-color: rgba(158, 158, 158, 0.7)!important;
 }
 
+#loginButton {
+  background-color: rgb(158, 158, 158)!important;
+}
+
+#loginButton:hover {
+  background-color: rgba(158, 158, 158, 0.7)!important;
+}
 .emphasis-text {
     color: #9500FF;
 }
