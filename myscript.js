@@ -332,17 +332,7 @@ const questions = function () {
   $('#myContainer').append(`<div id="progressIndicator"></div>`)
   let len = curPromptSet === 'chrome-extension-budget' ? prompts.ordered_prompts.length - 1 : prompts.ordered_prompts.length // 1st question of budget is should not be counted
   let curIdx = curPromptSet === 'chrome-extension-budget' ? curPromptIdx - 1 : curPromptIdx // should not code like this though
-  for (let i = 1; i <= len; i++) {
-    str = ''
-    if (i < curIdx){
-      str += `<span class="progressIndicator done">●</span>`
-    } else if (i == curIdx){
-      str += `<span class="progressIndicator current">●</span>`
-    } else {
-      str += `<span class="progressIndicator notyet">●</span>`
-    }
-    $('#progressIndicator').append(str)
-  }
+  $('#progressIndicator').append(`${curIdx}/${len}`)
 }
 const addButtons = function () {
   $('#myContainer').empty()
