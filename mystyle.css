@@ -156,11 +156,11 @@ button {
 }
 
 .promiseBookTitle a {
-  color: #9500FF !important;
+  /* color: #9500FF !important; */
   cursor: pointer;
 }
 
-#appName {
+#appName a{
   color: #9500FF !important;
 
 }
@@ -180,8 +180,8 @@ button {
 
 .promiseBookTitle #commentsButton {
   /* background-color: rgba(0, 0, 0, 0); */
-  color: #9500FF;
-  display: inline-block;
+  color: grey !important;
+  display: none;
   padding-left: 0.3em;
   padding-right: 0.3em;
   font-size: 0.6em;
@@ -238,7 +238,7 @@ button {
   /* margin: 0.2em; */
   margin-top: 0.6em;
   padding: 0.2em;
-  width: 2em;
+  /* width: 2em; */
   font-size: 0.8em;
 }
 
@@ -267,6 +267,13 @@ button {
   background-color: rgba(158, 158, 158, 0.7)!important;
 }
 
+#loginButton {
+  background-color: rgb(158, 158, 158)!important;
+}
+
+#loginButton:hover {
+  background-color: rgba(158, 158, 158, 0.7)!important;
+}
 .emphasis-text {
     color: #9500FF;
 }

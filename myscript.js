@@ -14,6 +14,8 @@ let keywords = []
 let chart = null
 let scores = []
 
+let isLogedIn = false
+
 const showCharts = function (labels, datasets){
   if(chart){
     chart.destroy()
@@ -111,22 +113,39 @@ const promptEnd = async function () {
       backgroundColor: 'rgba(193, 240, 244, 0.7)'
     })
     $('#myContainer').empty()
+    $('#myContainer').append('<div class="promiseTitle"><h3>' + object.title + '</h3></div>')
     $('#myContainer').append('<div class="questionContent">공약 평가 완료! 다른 사람들의 의견을 확인해보세요.</div>')
     $('#myContainer').append('<div id="myChartDiv"><canvas id="myChart" ></canvas></div>')
-    $('#myContainer').append('<button type="button" id="showBudgets" class="promiseTitleButton">관련 사업 보기</button>')
+    $('#myContainer').append('이 공약과 관련된 사업을 평가해주세요. ')
+    if(!isLogedIn){
+      $('#myContainer').append('<span id="login">몇 가지 정보를 알려주시면, 직접 관련있는 공약을 보여드립니다.</span>')
+    }
+    $('#myContainer').append('<br><button type="button" id="showBudgets" class="promiseTitleButton">관련 사업 보기</button>')
+    if(!isLogedIn){
+      $('#myContainer').append('<button type="button" id="loginButton" class="promiseTitleButton">회원 가입</button>')
+      $('#loginButton').click(function () {
+        chrome.runtime.sendMessage({action: 'authenticate'}, response => {
+          token = response.token
+          $('#loginButton').hide()
+          $('#login').hide()
+          isLogedIn = true
+        })
+      })
+    }
     $('#showBudgets').click(function (ev) {
       // ev.preventDefault()
+      scores = []
       setPrompts('chrome-extension-budget')
 
     })
     showCharts(labels, data)
   } else if (curPromptSet === 'chrome-extension-budget') {
-    let stats = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${curPromptSet}/statistics/`, {object_ids: getObjectId('budget')})
+    let stats = await $.get(`https://api.budgetwiser.org/api/prompt-sets/${curPromptSet}/statistics/`, {object_ids: getObjectId('budget program')})
     let labels = stats.ordered_prompts.slice(1).map(p => p.label)
-    let data = stats.series.slice(1).map(d => {
+    let data = stats.series.map(d => {
       return {
         label: d.label,
-        data: d.prompt_data.map(r => r.mean_rating),
+        data: d.prompt_data.slice(1).map(r => r.mean_rating),
         backgroundColor: 'rgba(243, 188, 200, 0.7)',
         borderColor: '#F2526E'
       }
@@ -139,8 +158,25 @@ const promptEnd = async function () {
       backgroundColor: 'rgba(193, 240, 244, 0.7)'
     })
     $('#myContainer').empty()
-    let str = `<div class="questionContent">사업 평가 완료! 다른 사람들의 의견을 확인해보세요.</div><div id="myChartDiv"><canvas id="myChart"></canvas></div>다른 공약에 대한 의견도 남겨주세요!<br><button type="button" class="progressButtons" id="endButton">다른 공약 보기</button>`
+    $('#myContainer').append('<div class="promiseTitle"><h3>' + object.title + '</h3></div>')
+    let str = `<div class="questionContent">사업 평가 완료! 다른 사람들의 의견을 확인해보세요.</div><div id="myChartDiv"><canvas id="myChart"></canvas></div>다른 공약에 대한 의견도 남겨주세요! `
+    let str2 = `<br><button type="button" class="promiseTitleButton" id="endButton">다른 공약 보기</button>`
     $('#myContainer').append(str)
+    if(!isLogedIn){
+      $('#myContainer').append('<span id="login">몇 가지 정보를 알려주시면, 직접 관련있는 공약을 보여드립니다.</span>')
+    }
+    $('#myContainer').append(str2)
+    if(!isLogedIn){
+      $('#myContainer').append('<button type="button" id="loginButton" class="promiseTitleButton">회원 가입</button>')
+      $('#loginButton').click(function () {
+        chrome.runtime.sendMessage({action: 'authenticate'}, response => {
+          token = response.token
+          $('#loginButton').hide()
+          $('#login').hide()
+          isLogedIn = true
+        })
+      })
+    }
     $('#endButton').click(function (ev) {
       // ev.preventDefault()
       $('#myContainer').empty()
@@ -215,6 +251,11 @@ const questions = function () {
           questions()
         })
       })
+    })
+    $('#myContainer').append('<button type="button" class="tagButtons" id="otherBudgets">다른 사업 보기</button>')
+    $('#otherBudgets').click(function () {
+      // curPromptIdx -= 1
+      setPrompts('chrome-extension-budget')
     })
     // str = '<button class="progressButtons">다음</button>'
     // $('#myContainer').append(str)
@@ -307,18 +348,20 @@ const addButtons = function () {
   $('#myContainer').empty()
   if(promises.length) {
     $('#myContainer').append(`<div class="prompt">이 기사와 관련있는 ${officialName}의 공약입니다.</div>`)
-    object = promises[Math.floor(Math.random() * promises.length)]
+    let promiseIdx = Math.floor(Math.random() * promises.length)
+    object = promises[promiseIdx]
     console.log(promises)
     promiseId = object.object_id
     let str = `<div class="promiseTitle"><h3>${object.title}</h3></button>`
     $('#myContainer').append(str)
-    $('#myContainer').append('<div class="prompt"><span class="emphasis-text">20대 남성 대학원생</span>과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
+    $('#myContainer').append('<div class="prompt"><span class="emphasis-text">20대 대학원생</span>과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
     $('#myContainer').append('<button type="button" id="noneBtn" class="promiseTitleButton">다른 공약 보기</button>')
     $('#myContainer').append('<button type="button" id="evalBtn" class="promiseTitleButton">이 공약 평가하기</button>')
     $('#noneBtn').click(function (ev) {
       console.log(ev)
       // ev.preventDefault()
       $('#myContainer').empty()
+      promises.splice(promiseIdx, 1)
       addButtons()
     })
     $('#evalBtn').click(function(ev) {
@@ -326,13 +369,24 @@ const addButtons = function () {
       setPrompts('chrome-extension-promise', promiseId)
     })
   } else {
-    $('#myContainer').append(`<div class="prompt">기사와 관련있는 ${officialName}의 공약이 없습니다. 다른 기사에서 뵈요!</div>`)
+    $('#myContainer').append(`<div class="prompt">기사와 관련있는 ${officialName}의 공약이 없습니다. 다른 기사에서 뵈어요!</div>`)
   }
-
 }
+
+const togglePane = function () {
+  console.log('a')
+  $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">🐟Tuna News</a>')
+  $('#commentsButton').show()
+  let txt = $('#collapseButton').text()
+  $('#collapseButton').text(txt === '+' ? '-' : '+')
+  $('#myContainer').toggle()
+}
+
 const initializePromiseList = function () {
   chrome.runtime.sendMessage({action: 'getToken'}, (response) => {
     token = response.token
+    isLogedIn = response.isLogedIn
+    console.log('token: ' + token)
   })
   const url = 'https://api.budgetwiser.org/api/news/get_by_url/'
   const onSuccess = function (data, textStatus, jqXHR) {
@@ -379,14 +433,16 @@ const initializePromiseList = function () {
     $('.promiseBook').css('marginLeft', margin+'px')
     // $('.promiseBook').css('paddingLeft', paddingLeft)
     $('#loader').attr("src", chrome.extension.getURL('loading.gif'))
-    $('#collapseButton').click(function () {
-      $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">PromiseBook</a>')
-      let txt = $('#collapseButton').text()
-      $('#collapseButton').text(txt === '+' ? '-' : '+')
-      $('#myContainer').toggle()
+    // $('#collapseButton').click(function () {
+    //   togglePane()
+    // })
+    $('.promiseBookTitle').click(function(ev){
+      togglePane()
     })
 
-    $.get(url, {url: newsURL}, onSuccess)
+    $.get(url, {url: newsURL}, onSuccess).fail(function () {
+      $('#myContainer').empty().append(`<div class="prompt">서버 오류입니다. 조금 뒤 다시 시도해주세요!</div>`)
+    })
   }  
 }
 

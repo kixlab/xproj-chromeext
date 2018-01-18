@@ -2,13 +2,22 @@ var host = 'https://api.budgetwiser.org';
 
 OAuth2.adapter('custom', {
   authorizationCodeURL: function(config) {
-    return (host + '/oauth/authorize/?' +
+    let authURL = (host + '/oauth/authorize/?' +
       'client_id={{CLIENT_ID}}&' +
       'redirect_uri={{REDIRECT_URI}}&' +
       'response_type=code')
         .replace('{{CLIENT_ID}}', config.clientId)
         .replace('{{REDIRECT_URI}}', this.redirectURL(config))
         .replace('{{API_SCOPE}}', config.apiScope);
+    let token = localStorage.getItem('token')
+    if(token) {
+      localStorage.removeItem('token')
+      let consolidateURL = api_host + `/accounts/consolidate-user/?token=${token}&next=${encodeURIComponent(authURL)}`
+      console.log(consolidateURL)
+      return consolidateURL
+    } else {
+      return authURL
+    }
   },
 
   redirectURL: function(config) {
