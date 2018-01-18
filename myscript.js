@@ -332,7 +332,8 @@ const questions = function () {
   $('#myContainer').append(`<div id="progressIndicator"></div>`)
   let len = curPromptSet === 'chrome-extension-budget' ? prompts.ordered_prompts.length - 1 : prompts.ordered_prompts.length // 1st question of budget is should not be counted
   let curIdx = curPromptSet === 'chrome-extension-budget' ? curPromptIdx - 1 : curPromptIdx // should not code like this though
-  $('#progressIndicator').append(`${curIdx}/${len}`)
+  if (curIdx != 0)
+    $('#progressIndicator').append(`${curIdx}/${len}`)
 }
 const addButtons = function () {
   $('#myContainer').empty()
