@@ -99,8 +99,8 @@ const promptEnd = async function () {
     let labels = stats.ordered_prompts.map(p => p.label)
     let data = stats.series.map(d => {
       return {
-        label: d.label,
-        data: d.prompt_data.map(r => r.mean_rating),
+        label: '전체',
+        data: d.prompt_data.map(r => Math.round(r.mean_rating*100)/100),
         borderColor: '#F2526E',
         backgroundColor: 'rgba(243, 188, 200, 0.7)'
       }
@@ -200,7 +200,7 @@ const questions = function () {
       $('#myContainer').append(str)
       $('#button'+i).click( async (ev)=> {
         // ev.preventDefault()
-        $(ev.target).animate({ opacity: 0 });
+        $(ev.target).animate({ opacity: 0.3 });
         scores.push(i)
         await $.post({
           headers: {
@@ -242,6 +242,7 @@ const questions = function () {
       $('#myContainer').append(str)
       $(`#button${obj.id}`).click((ev) => {
         // ev.preventDefault()
+        $(ev.target).animate({ opacity: 0.3 });
         budgetId = obj.id
         object = obj
         object.title = obj.__str__
@@ -307,6 +308,7 @@ const questions = function () {
     $('#myContainer').append(str)
     $('.progressButtons').click((ev) => {
       // ev.preventDefault()
+      $(ev.target).animate({ opacity: 0.3 });
       const text = $('#comment').val()
       $.post({
         headers: {
@@ -332,17 +334,8 @@ const questions = function () {
   $('#myContainer').append(`<div id="progressIndicator"></div>`)
   let len = curPromptSet === 'chrome-extension-budget' ? prompts.ordered_prompts.length - 1 : prompts.ordered_prompts.length // 1st question of budget is should not be counted
   let curIdx = curPromptSet === 'chrome-extension-budget' ? curPromptIdx - 1 : curPromptIdx // should not code like this though
-  for (let i = 1; i <= len; i++) {
-    str = ''
-    if (i < curIdx){
-      str += `<span class="progressIndicator done">●</span>`
-    } else if (i == curIdx){
-      str += `<span class="progressIndicator current">●</span>`
-    } else {
-      str += `<span class="progressIndicator notyet">●</span>`
-    }
-    $('#progressIndicator').append(str)
-  }
+  if (curIdx != 0)
+    $('#progressIndicator').append(`${curIdx}/${len}`)
 }
 const addButtons = function () {
   $('#myContainer').empty()
@@ -378,7 +371,7 @@ const togglePane = function () {
   $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">🐟Tuna News</a>')
   $('#commentsButton').show()
   let txt = $('#collapseButton').text()
-  $('#collapseButton').text(txt === '+' ? '-' : '+')
+  $('#collapseButton').text(txt === 'expand_more' ? 'expand_less' : 'expand_more')
   $('#myContainer').toggle()
 }
 
@@ -413,11 +406,10 @@ const initializePromiseList = function () {
   `<div class="promiseBook">
     <div class="promiseBookTitle">
       <div id="appName">
-        박원순 시장이 4년 전에 뭐라고 했을까요?
+        기사 주제와 관련된, 박원순 시장의 4년 전 약속은?
       </div>
       <div class="promiseBookTitleButtons">
-        <a href="https://goo.gl/forms/IFYwyUK68NiEWEsj2" target="_blank" id="commentsButton">Comments?</a>
-        <button type="button" class="titleButtons" id="collapseButton">+</button>
+        <i class="material-icons" id="collapseButton">expand_more</i>
       </div>
     </div>
     <div id="myContainer"><img id="loader"></div>
@@ -443,7 +435,7 @@ const initializePromiseList = function () {
     $.get(url, {url: newsURL}, onSuccess).fail(function () {
       $('#myContainer').empty().append(`<div class="prompt">서버 오류입니다. 조금 뒤 다시 시도해주세요!</div>`)
     })
-  }  
+  }
 }
 
 initializePromiseList()

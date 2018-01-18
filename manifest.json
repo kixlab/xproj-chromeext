@@ -30,7 +30,7 @@
     {
       "matches": ["http://*/*"],
       "js":["newsSites.js", "jquery-3.2.1.js", "Chart.min.js", "myscript.js"],
-      "css": ["mystyle.css"]
+      "css": ["mystyle.css", "icon.css"]
     },
     {
       "matches": ["https://api.budgetwiser.org/oauth/success/*"],
@@ -38,6 +38,13 @@
       "run_at": "document_start"
     }
   ],
+  "browser_action": {
+    "default_icon": {
+      "64": "icon-64.png"
+    },
+    "default_title": "환경설정",
+    "default_popup": "browser_action/popup.html"
+  },
   "web_accessible_resources": [
     "oauth2/oauth2.html",
     "loading.gif"
