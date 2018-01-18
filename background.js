@@ -96,6 +96,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         let token = auth.getAccessToken()
         console.log('token from background.js: ' + token)
         if(token){
+            auth.authorize()
             sendResponse({token: token, isLogedIn: true})
         } else {
             if(localStorage.getItem('token')) {

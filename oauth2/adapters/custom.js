@@ -11,6 +11,7 @@ OAuth2.adapter('custom', {
         .replace('{{API_SCOPE}}', config.apiScope);
     let token = localStorage.getItem('token')
     if(token) {
+      localStorage.removeItem('token')
       let consolidateURL = api_host + `/accounts/consolidate-user/?token=${token}&next=${encodeURIComponent(authURL)}`
       console.log(consolidateURL)
       return consolidateURL
