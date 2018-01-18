@@ -413,7 +413,7 @@ const initializePromiseList = function () {
   `<div class="promiseBook">
     <div class="promiseBookTitle">
       <div id="appName">
-        박원순 시장이 4년 전에 뭐라고 했을까요?
+        기사 주제와 관련된, 박원순 시장의 4년 전 약속은?
       </div>
       <div class="promiseBookTitleButtons">
         <i class="material-icons" id="collapseButton">expand_more</i>
