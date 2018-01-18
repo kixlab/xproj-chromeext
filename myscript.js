@@ -200,7 +200,7 @@ const questions = function () {
       $('#myContainer').append(str)
       $('#button'+i).click( async (ev)=> {
         // ev.preventDefault()
-        $(ev.target).animate({ opacity: 0 });
+        $(ev.target).animate({ opacity: 0.3 });
         scores.push(i)
         await $.post({
           headers: {
@@ -242,6 +242,7 @@ const questions = function () {
       $('#myContainer').append(str)
       $(`#button${obj.id}`).click((ev) => {
         // ev.preventDefault()
+        $(ev.target).animate({ opacity: 0.3 });
         budgetId = obj.id
         object = obj
         object.title = obj.__str__
@@ -307,6 +308,7 @@ const questions = function () {
     $('#myContainer').append(str)
     $('.progressButtons').click((ev) => {
       // ev.preventDefault()
+      $(ev.target).animate({ opacity: 0.3 });
       const text = $('#comment').val()
       $.post({
         headers: {
