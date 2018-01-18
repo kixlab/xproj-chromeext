@@ -30,7 +30,7 @@
     {
       "matches": ["http://*/*"],
       "js":["newsSites.js", "jquery-3.2.1.js", "Chart.min.js", "myscript.js"],
-      "css": ["mystyle.css"]
+      "css": ["mystyle.css", "icon.css"]
     },
     {
       "matches": ["https://api.budgetwiser.org/oauth/success/*"],

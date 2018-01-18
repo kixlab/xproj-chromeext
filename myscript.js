@@ -378,7 +378,7 @@ const togglePane = function () {
   $('#appName').html('<a href="https://api.budgetwiser.org" target="_blank">🐟Tuna News</a>')
   $('#commentsButton').show()
   let txt = $('#collapseButton').text()
-  $('#collapseButton').text(txt === '+' ? '-' : '+')
+  $('#collapseButton').text(txt === 'expand_more' ? 'expand_less' : 'expand_more')
   $('#myContainer').toggle()
 }
 
@@ -416,8 +416,7 @@ const initializePromiseList = function () {
         박원순 시장이 4년 전에 뭐라고 했을까요?
       </div>
       <div class="promiseBookTitleButtons">
-        <a href="https://goo.gl/forms/IFYwyUK68NiEWEsj2" target="_blank" id="commentsButton">Comments?</a>
-        <button type="button" class="titleButtons" id="collapseButton">+</button>
+        <i class="material-icons" id="collapseButton">expand_more</i>
       </div>
     </div>
     <div id="myContainer"><img id="loader"></div>
@@ -443,7 +442,7 @@ const initializePromiseList = function () {
     $.get(url, {url: newsURL}, onSuccess).fail(function () {
       $('#myContainer').empty().append(`<div class="prompt">서버 오류입니다. 조금 뒤 다시 시도해주세요!</div>`)
     })
-  }  
+  }
 }
 
 initializePromiseList()

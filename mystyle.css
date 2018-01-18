@@ -167,15 +167,15 @@ button {
 }
 
 .promiseBookTitle #collapseButton {
-  background-color: #9500FF;
   padding-left: 0.3em;
   padding-right: 0.3em;
-  color: white;
+  color: #9500FF;
   display: inline-block;
   font-size: 1em;
   vertical-align: middle;
   min-width: 28px;
   line-height: unset;
+  text-align: right;
   /* box-shadow: none; */
 }
 
