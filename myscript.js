@@ -99,8 +99,8 @@ const promptEnd = async function () {
     let labels = stats.ordered_prompts.map(p => p.label)
     let data = stats.series.map(d => {
       return {
-        label: d.label,
-        data: d.prompt_data.map(r => r.mean_rating),
+        label: '전체',
+        data: d.prompt_data.map(r => Math.round(r.mean_rating*100)/100),
         borderColor: '#F2526E',
         backgroundColor: 'rgba(243, 188, 200, 0.7)'
       }
