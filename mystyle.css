@@ -217,7 +217,12 @@ button {
   word-break: keep-all;
   /* box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3); */
 }
-
+#myContainer .detailHeader {
+  color: #9500FF;
+  font-family: 'NanumGothic';
+  text-align: left;
+  margin-bottom: 0.2em;
+}
 #myContainer .promiseTitleButton:hover, #myContainer .promiseTitleButton:focus, #myContainer .promiseTitleButton:active  {
   /* box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2); */
   background-color: rgba(149, 0, 255, 0.7);
