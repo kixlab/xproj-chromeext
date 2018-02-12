@@ -77,6 +77,15 @@ button {
   /* float: right; */
 }
 
+#skipButton {
+  background-color: rgb(158, 158, 158)!important;
+  /* box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3); */
+}
+
+#skipButton:hover {
+  background-color: rgba(158, 158, 158, 0.7)!important;
+}
+
 .progressButtons:hover, .progressButtons:focus, .progressButtons:active {
   /* box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2); */
   background-color: rgba(149, 0, 255, 0.7);
