@@ -188,9 +188,36 @@ const promptEnd = async function () {
 const questions = function () {
   curPromptIdx += 1
   $('#myContainer').empty()
-  let str = '<div class="promiseTitle"><h3>' + object.title + '</h3></div>'
+  let str = '<div class="promiseTitle"><h3><a id="detail">' + object.title + '</a></h3></div>'
   str += '<div class="questionContent">' + promptInstance.display_text + '</div>'
   $('#myContainer').append(str)
+  $('#detail').click(function () {
+    $('#myContainer').empty()
+    $('#myContainer').append(
+      `
+      <div class="promiseTitle"><h3>${object.title}</h3></div>
+      <h3 class="detailHeader">공약 목적</h3>
+      <div class="prompt">
+      <ul>
+        <li>초등학생 2명 중 1명은 '나홀로 등학교' 학생입니다. 그들이 전체 사고의 67.2%를 차지합니다. 어린이보호구역 내에서 만큼은 어린이 교통사고를 완전히 없앨 방법이 반드시 필요합니다.</li>
+      </ul>
+      </div>
+      <h3 class="detailHeader">공약 목표</h3>
+      <div class="prompt">
+      <ul>
+        <li>2016년 어린이보호구역 내 교통사고 50% 감축</li>
+        <li>2018년 6월까지 75% 감축</li>
+        <li>2020년까지 ZERO화 달성</li>
+      </ul>
+      </div>
+      <button type="button" class="progressButtons" id="detailCloseBtn">설명 닫기</button>
+      `
+    )
+    $('#detailCloseBtn').click(function () {
+      curPromptIdx -= 1
+      questions()
+    })
+  })
   console.log(promptInstance)
   if(promptInstance.prompt.type === 'likert') {
     $('#myContainer').append('<div class="likertLabels">매우 아니다</div>')
@@ -226,6 +253,18 @@ const questions = function () {
       })
     }
     $('#myContainer').append('<div class="likertLabels">매우 그렇다</div>')
+    $('#myContainer').append('<br><button type="button" class="progressButtons" id="skipButton">→</button>')
+    $('#skipButton').click(function () {
+      if(!promptInstance.next_prompt_instance) {
+        promptEnd()
+      } else {
+        $.get(promptInstance.next_prompt_instance, {"object_id": getObjectId(promptInstance.next_prompt.prompt_object_type)}).then((data) => {
+          console.log(data)
+          promptInstance = data
+          questions()
+        })
+      }
+    })
   } else if (promptInstance.prompt.type === 'tagging') {
     // for(let i = 0; i < promptInstance.response_objects.length; i++){
     //   str = '<div>'
@@ -350,6 +389,30 @@ const addButtons = function () {
     $('#myContainer').append('<div class="prompt"><span class="emphasis-text">20대 대학원생</span>과 가장 연관있는 공약입니다. 이 공약에 대해 어떻게 생각하시나요?</div>')
     $('#myContainer').append('<button type="button" id="noneBtn" class="promiseTitleButton">다른 공약 보기</button>')
     $('#myContainer').append('<button type="button" id="evalBtn" class="promiseTitleButton">이 공약 평가하기</button>')
+    // $('#myContainer').append('<button id="detailBtn">자세한 정보 보기</button>')
+    // $('#detailBtn').click(function() {
+    //   $('#myContainer').empty()
+    //   $('#myContainer').append(
+    //     `
+    //     <div class="promiseTitle"><h3>${object.title}</h3></div>
+    //     <h3 class="detailHeader">공약 목적</h3>
+    //     <div class="prompt">
+    //     <ul>
+    //       <li>초등학생 2명 중 1명은 '나홀로 등학교' 학생입니다. 그들이 전체 사고의 67.2%를 차지합니다. 어린이보호구역 내에서 만큼은 어린이 교통사고를 완전히 없앨 방법이 반드시 필요합니다.</li>
+    //     </ul>
+    //     </div>
+    //     <h3 class="detailHeader">공약 목표</h3>
+    //     <div class="prompt">
+    //     <ul>
+    //       <li>2016년 어린이보호구역 내 교통사고 50% 감축</li>
+    //       <li>2018년 6월까지 75% 감축</li>
+    //       <li>2020년까지 ZERO화 달성</li>
+    //     </ul>
+    //     </div>
+    //     <button type="button" class="progressButtons" id="detailCloseBtn">설명 닫기</button>
+    //     `
+    //   )
+    // })
     $('#noneBtn').click(function (ev) {
       console.log(ev)
       // ev.preventDefault()

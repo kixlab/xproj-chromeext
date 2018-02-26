@@ -5,8 +5,11 @@
   "description": "Question pane shown before the article",
   "version": "1.0",
   "browser_action": {
-    "default_title": "News Reader",
-    "default_icon": "icon-64.png"
+    "default_icon": {
+      "64": "icon-64.png"
+    },
+    "default_title": "환경설정",
+    "default_popup": "browser_action/popup.html"
   },
   "permissions": [
     "activeTab",
@@ -38,13 +41,6 @@
       "run_at": "document_start"
     }
   ],
-  "browser_action": {
-    "default_icon": {
-      "64": "icon-64.png"
-    },
-    "default_title": "환경설정",
-    "default_popup": "browser_action/popup.html"
-  },
   "web_accessible_resources": [
     "oauth2/oauth2.html",
     "loading.gif"
