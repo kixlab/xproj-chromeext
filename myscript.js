@@ -196,23 +196,14 @@ const questions = function () {
     $('#myContainer').append(
       `
       <div class="promiseTitle"><h3>${object.title}</h3></div>
-      <h3 class="detailHeader">공약 목적</h3>
-      <div class="prompt">
-      <ul>
-        <li>초등학생 2명 중 1명은 '나홀로 등학교' 학생입니다. 그들이 전체 사고의 67.2%를 차지합니다. 어린이보호구역 내에서 만큼은 어린이 교통사고를 완전히 없앨 방법이 반드시 필요합니다.</li>
-      </ul>
-      </div>
       <h3 class="detailHeader">공약 목표</h3>
-      <div class="prompt">
-      <ul>
-        <li>2016년 어린이보호구역 내 교통사고 50% 감축</li>
-        <li>2018년 6월까지 75% 감축</li>
-        <li>2020년까지 ZERO화 달성</li>
-      </ul>
+      <div class="prompt" id="goals">
       </div>
       <button type="button" class="progressButtons" id="detailCloseBtn">설명 닫기</button>
       `
     )
+    console.log(object.goals.replace(/\n/g, '<br />'))
+    $('#goals').html(`${object.goals.replace(/\n/g, '<br />')}`)
     $('#detailCloseBtn').click(function () {
       curPromptIdx -= 1
       questions()
@@ -341,7 +332,7 @@ const questions = function () {
     //   // })
     // })
   } else if (promptInstance.prompt.type === 'openended') {
-    str = '<input type="text" id="comment"></input>'
+    str = '<input type="text" class="comment" id="comment" placeholder="의견을 적어주세요."></input>'
     $('#myContainer').append(str)
     str = '<button type="button" class="progressButtons">다음</button>'
     $('#myContainer').append(str)
